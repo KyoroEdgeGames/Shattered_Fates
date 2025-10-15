@@ -1,0 +1,8 @@
+{
+  "name": "Coal",
+  "clan": "Bloodclan",
+  "age": 6,
+  "type": "story_support",
+  "abilities": ["stone_claws"],
+  "npc": true
+}

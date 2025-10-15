@@ -1,0 +1,22 @@
+[
+    {
+        "name": "claw_attack",
+        "level_required": 1,
+        "effect": "basic damage"
+    },
+    {
+        "name": "necrotic_strike",
+        "level_required": 3,
+        "effect": "poison damage"
+    },
+    {
+        "name": "stealth",
+        "level_required": 2,
+        "effect": "avoid detection"
+    },
+    {
+        "name": "herbal_heal",
+        "level_required": 2,
+        "effect": "heal wounds"
+    }
+]

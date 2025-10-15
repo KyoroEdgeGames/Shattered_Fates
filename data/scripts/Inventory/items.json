@@ -1,0 +1,85 @@
+[
+    {
+        "name": "mouse",
+        "type": "food",
+        "effect": "restore_health"
+    },
+    {
+        "name": "rare_herb",
+        "type": "ingredient",
+        "effect": "crafting"
+    },
+    {
+        "name": "poison_claw_recipe",
+        "type": "recipe",
+        "effect": "unlock_skill"
+    },
+    {
+        "id": "ancient_stone_fragment",
+        "name": "Ancient Stone Fragment",
+        "type": "quest_item",
+        "description": "A fragment of the ruins’ walls. Seems to hum faintly when touched.",
+        "value": 0
+    },
+    {
+        "id": "iron_claw_dagger",
+        "name": "Iron Claw Dagger",
+        "type": "weapon",
+        "description": "A short blade perfect for stealth attacks. Sharp, yet balanced.",
+        "attack": 5,
+        "durability": 50
+    },
+    {
+        "id": "clan_banner",
+        "name": "Clan Banner",
+        "type": "decor",
+        "description": "A small banner to mark territory or display allegiance.",
+        "value": 10
+    },
+    {
+        "id": "moonstone_amulet",
+        "name": "Moonstone Amulet",
+        "type": "accessory",
+        "description": "A mysterious amulet that glows faintly at night.",
+        "effect": {
+            "stealth": 2,
+            "luck": 1
+        }
+    },
+    {
+        "id": "healing_ointment",
+        "name": "Healing Ointment",
+        "type": "consumable",
+        "description": "A small salve that accelerates minor wound healing.",
+        "effect": {
+            "heal": 15
+        }
+    },
+    {
+        "id": "silver_claw_charm",
+        "name": "Silver Claw Charm",
+        "type": "accessory",
+        "description": "Enhances a cat's combat reflexes temporarily.",
+        "effect": {
+            "attack": 3,
+            "speed": 2
+        }
+    },
+    {
+        "id": "ancient_scroll",
+        "name": "Ancient Scroll",
+        "type": "quest_item",
+        "description": "An old scroll containing knowledge of lost techniques.",
+        "value": 0
+    },
+    {
+        "id": "nightshade_bomb",
+        "name": "Nightshade Bomb",
+        "type": "tool",
+        "description": "A small pouch of toxic nightshade; can be used for sabotage.",
+        "effect": {
+            "stealth": 1,
+            "poison": 5
+        }
+    }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "Ivy",
+  "clan": "Bloodclan",
+  "age": 6,
+  "type": "story_main",
+  "abilities": ["bloodclaw", "enhanced_senses"],
+  "npc": true,
+  "quests_available": ["tutorial_hunt"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Stolenstar",
+  "clan": "Bloodclan",
+  "role": "Leader",
+  "type": "story_support",
+  "abilities": ["life_steal"],
+  "npc": true,
+  "description": "Bloodthirsty and ambitious Leader of Bloodclan, Father of Ivy and Coala"
+}

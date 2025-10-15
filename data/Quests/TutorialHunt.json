@@ -1,0 +1,11 @@
+{
+  "id": "tutorial_hunt",
+  "name": "Hunt the Mouse",
+  "description": "Catch 3 mice in the forest to learn hunting.",
+  "reward": {
+    "xp": 20,
+    "item": "Mouse Tail"
+  },
+  "location": "Lostclan Forest",
+  "active": false
+}

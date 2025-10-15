@@ -1,0 +1,61 @@
+{
+  "general_events": [
+    {
+      "id": "rogue_sighting",
+      "name": "Rogue Sighting",
+      "description": "A wandering rogue has been seen near the clan territory. Stay alert!",
+      "trigger": "random",
+      "effects": {
+        "morale": -5,
+        "combat_readiness": 5
+      },
+      "npc_involved": ["Scoutpaw", "Coalstrike"],
+      "quest": {
+        "name": "Investigate the Rogue",
+        "description": "Track the rogue and report back.",
+        "reward": {
+          "xp": 20,
+          "item": "rare_claw"
+        }
+      }
+    },
+    {
+      "id": "injured_cat",
+      "name": "Injured Cat",
+      "description": "An injured outsider has wandered into the camp. Medicine cats must act quickly.",
+      "trigger": "random",
+      "effects": {
+        "morale": 5,
+        "healing_bonus": 3
+      },
+      "npc_involved": ["Olivesky", "Batpaw"],
+      "quest": {
+        "name": "Tend the Wound",
+        "description": "Assist in healing the injured cat.",
+        "reward": {
+          "xp": 25,
+          "item": "healing_herb"
+        }
+      }
+    },
+    {
+      "id": "friendly_trader",
+      "name": "Friendly Trader",
+      "description": "A traveling cat offers rare items in exchange for supplies.",
+      "trigger": "random",
+      "effects": {
+        "morale": 5,
+        "resources": 10
+      },
+      "npc_involved": ["RogueTrader"],
+      "quest": {
+        "name": "Trade Items",
+        "description": "Trade goods with the wandering trader.",
+        "reward": {
+          "xp": 15,
+          "item": "special_fur"
+        }
+      }
+    }
+  ]
+}

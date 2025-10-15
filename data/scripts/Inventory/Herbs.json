@@ -1,0 +1,69 @@
+[
+    {
+        "id": "moonshade",
+        "name": "Moonshade",
+        "description": "A silvery leaf that enhances night vision and alertness.",
+        "effects": {
+            "stealth": 2,
+            "vision": 3
+        },
+        "rarity": "rare"
+    },
+    {
+        "id": "bloodroot",
+        "name": "Bloodroot",
+        "description": "A red-rooted herb used for healing wounds and boosting energy.",
+        "effects": {
+            "heal": 20,
+            "stamina": 5
+        },
+        "rarity": "uncommon"
+    },
+    {
+        "id": "nightbloom",
+        "name": "Nightbloom",
+        "description": "A glowing flower that only blooms under the moon. Great for potions.",
+        "effects": {
+            "mana": 10,
+            "stealth": 1
+        },
+        "rarity": "rare"
+    },
+    {
+        "id": "sageleaf",
+        "name": "Sageleaf",
+        "description": "Common herb used in calming brews and minor healing remedies.",
+        "effects": {
+            "heal": 5
+        },
+        "rarity": "common"
+    },
+    {
+        "id": "wolfsbane",
+        "name": "Wolfsbane",
+        "description": "Extremely toxic if ingested; can be used for traps or poisons.",
+        "effects": {
+            "poison": 10
+        },
+        "rarity": "rare"
+    },
+    {
+        "id": "sunpetal",
+        "name": "Sunpetal",
+        "description": "Golden herb known for energizing tired warriors during patrols.",
+        "effects": {
+            "stamina": 10
+        },
+        "rarity": "uncommon"
+    },
+    {
+        "id": "whisperroot",
+        "name": "Whisperroot",
+        "description": "Enhances a cat's ability to listen and detect hidden enemies.",
+        "effects": {
+            "hearing": 2,
+            "stealth": 1
+        },
+        "rarity": "rare"
+    }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "Starcove",
+  "description": "A moonlit pool hidden in a clearing. Cats go there for visions and blessings.",
+  "location": [50, 50],
+  "effects": {
+    "vision_xp": 0,
+    "romance_boost": 5
+  }
+}

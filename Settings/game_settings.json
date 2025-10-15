@@ -1,0 +1,12 @@
+{
+  "volume_music": 0.7,
+  "volume_sfx": 0.8,
+  "difficulty": "normal",
+  "controls": {
+    "move_forward": "W",
+    "move_back": "S",
+    "move_left": "A",
+    "move_right": "D",
+    "jump": "SPACE"
+  }
+}

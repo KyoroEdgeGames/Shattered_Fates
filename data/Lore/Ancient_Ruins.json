@@ -1,0 +1,46 @@
+{
+    "name": "Ancient Ruins",
+    "location": "Dense Forest Near Lostclan Territory",
+    "discovered_by": [],
+    "description": "A set of crumbling stone structures hidden deep in the forest. Legends say these ruins belonged to the Ancients, long before the clans formed. Strange markings hint at forgotten knowledge, powerful herbs, and secret passageways.",
+    "features": {
+        "hidden_chambers": true,
+        "mystical_herbs": ["Moonshade", "Bloodroot", "Nightbloom"],
+        "traps": ["pitfall", "tripwire", "falling stones"],
+        "runes": {
+            "combat_boost": "Increases battle skill temporarily when meditated upon",
+            "healing_boost": "Improves medicine cat effectiveness for the next day",
+            "vision_boost": "Enhances stealth and detection for 2 patrols"
+        }
+    },
+    "quests": [
+        {
+            "id": "ruins_exploration_001",
+            "name": "First Step into the Ruins",
+            "description": "Explore the entrance and report back to your clan.",
+            "requirements": ["apprentice_age_or_older"],
+            "rewards": {
+                "xp": 50,
+                "item": "Ancient Stone Fragment"
+            },
+            "completed": false
+        },
+        {
+            "id": "ruins_rune_puzzle",
+            "name": "Decipher the Runes",
+            "description": "Solve the runic puzzle inside the deepest chamber to unlock hidden herbs.",
+            "requirements": ["completed_001", "high_intelligence_or_herbalism_skill"],
+            "rewards": {
+                "xp": 150,
+                "item": "Moonshade Leaf",
+                "skill_boost": {"herbalism": 1}
+            },
+            "completed": false
+        }
+    ],
+    "story_flags": {
+        "player_first_visit": false,
+        "secret_passage_found": false,
+        "ancient_knowledge_unlocked": false
+    }
+}

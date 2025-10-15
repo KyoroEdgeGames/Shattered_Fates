@@ -1,0 +1,61 @@
+{
+  "seasonal_events": [
+    {
+      "id": "summer_heatwave",
+      "name": "Summer Heatwave",
+      "description": "A wave of heat makes hunting difficult and water scarce.",
+      "trigger": "mid_summer",
+      "effects": {
+        "morale": -10,
+        "hunting_success": -5
+      },
+      "npc_involved": ["Coalpaw", "Ivyclaw"],
+      "quest": {
+        "name": "Find Water",
+        "description": "Locate a water source to keep the clan hydrated.",
+        "reward": {
+          "xp": 30,
+          "item": "freshwater_leaf"
+        }
+      }
+    },
+    {
+      "id": "autumn_hunt",
+      "name": "Autumn Hunt",
+      "description": "Prey is abundant as the leaves fall. The clan works together to stockpile food.",
+      "trigger": "first_autumn_leaf",
+      "effects": {
+        "morale": 10,
+        "hunting_success": 15
+      },
+      "npc_involved": ["Bramble", "Lightfern", "Ivypaw"],
+      "quest": {
+        "name": "Hunt Together",
+        "description": "Participate in group hunting to bring back as much food as possible.",
+        "reward": {
+          "xp": 25,
+          "item": "plump_mouse"
+        }
+      }
+    },
+    {
+      "id": "winter_solstice",
+      "name": "Winter Solstice",
+      "description": "The clan gathers at Starcove to celebrate the shortest day of the year.",
+      "trigger": "winter_solstice_day",
+      "effects": {
+        "morale": 20,
+        "training_bonus": 2
+      },
+      "npc_involved": ["Olivesky", "Ivyclaw", "Coalstrike"],
+      "quest": {
+        "name": "Solstice Celebration",
+        "description": "Join the ceremony and help prepare offerings.",
+        "reward": {
+          "xp": 40,
+          "item": "glowing_moonstone"
+        }
+      }
+    }
+  ]
+}

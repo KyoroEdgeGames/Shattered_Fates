@@ -1,0 +1,42 @@
+[
+    {
+        "name": "CustomCat",
+        "playable": true,
+        "clan": "Lostclan",
+        "age_stage": "kit",
+        "traits": {
+            "agility": 5,
+            "strength": 4,
+            "stealth": 3
+        },
+        "skills": []
+    },
+    {
+        "name": "Ivy",
+        "playable": true,
+        "clan": "Bloodclan",
+        "age_stage": "kit",
+        "traits": {
+            "agility": 6,
+            "strength": 7,
+            "necrotic_power": 5
+        },
+        "skills": [
+            "necrotic_strike",
+            "claw_attack"
+        ]
+    },
+    {
+        "name": "Coal",
+        "playable": false,
+        "clan": "Bloodclan",
+        "age_stage": "kit",
+        "traits": {
+            "agility": 5,
+            "strength": 6
+        },
+        "skills": [
+            "stone_claws"
+        ]
+    }
+]

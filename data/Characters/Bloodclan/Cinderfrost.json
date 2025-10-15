@@ -1,0 +1,21 @@
+{
+    "name": "Cinderfrost",
+    "clan": "Bloodclan",
+    "role": "Medicine Cat",
+    "age_stage": "Adult",
+    "sex": "Female",
+    "apprentice": "Batpaw",
+    "mate": null,
+    "children": [],
+    "skills": {
+        "healing": 7,
+        "herb_knowledge": 5,
+        "combat": 6
+    },
+    "personality": {
+        "Bloodthirsty": true,
+        "prophetic": true,
+        "friendly": true
+    
+    }
+}

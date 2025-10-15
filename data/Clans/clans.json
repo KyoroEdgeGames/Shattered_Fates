@@ -1,0 +1,28 @@
+{
+    "Lostclan": {
+        "leader": "Shatteredstar",
+        "medicine_cat": "Olivesky",
+        "warriors": [
+            "Blazetalon"
+        ],
+        "territory": "forest_valley",
+        "traits": {
+            "agility": 7,
+            "strength": 5
+        }
+    },
+    "Bloodclan": {
+        "leader": "Stolenstar",
+        "medicine_cat": "Shadowroot",
+        "warriors": [
+            "Ivy",
+            "Coal"
+        ],
+        "territory": "dark_forest",
+        "traits": {
+            "agility": 6,
+            "strength": 8,
+            "necrotic_power": 7
+        }
+    }
+}

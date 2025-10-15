@@ -1,0 +1,10 @@
+{
+  "Lostclan": {
+    "LeaderDen": {"location": [10, 5], "capacity": 1},
+    "DeputyDen": {"location": [11, 5], "capacity": 1},
+    "Nursery": {"location": [12, 6], "capacity": 10},
+    "MedicineDen": {"location": [12, 4], "capacity": 2},
+    "WarriorsSittingPlace": {"location": [9, 6], "capacity": 6},
+    "GatherArea": {"location": [8, 7], "capacity": 10}
+  }
+}

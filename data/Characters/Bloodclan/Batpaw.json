@@ -1,0 +1,24 @@
+{
+    "name": "Batpaw",
+    "clan": "Bloodclan",
+    "role": "Medicine Cat Apprentice",
+    "age_stage": "apprentice",
+    "sex": "male",
+    "mentor": "Cinderfrost",
+    "mate": null,
+    "children": [],
+    "skills": {
+        "healing": 3,
+        "herb_knowledge": 4,
+        "combat": 1
+    },
+    "personality": {
+        "curious": true,
+        "loyal": true,
+        "timid": false
+    },
+    "story_flags": {
+        "introduced": false,
+        "quest_available": true
+    }
+}

@@ -1,0 +1,29 @@
+[
+    {
+        "id": "lostclan_kit_intro",
+        "name": "First Hunt",
+        "description": "Learn to hunt with your clan warriors.",
+        "required_age": "kit",
+        "rewards": {
+            "xp": 10,
+            "skill_unlock": "claw_attack"
+        },
+        "npc_involved": [
+            "Blazetalon",
+            "Olivesky"
+        ]
+    },
+    {
+        "id": "bloodclan_ivy_training",
+        "name": "Necrotic Strike Practice",
+        "description": "Train with Ivy to master the necrotic strike.",
+        "required_age": "apprentice",
+        "rewards": {
+            "xp": 15,
+            "skill_unlock": "necrotic_strike"
+        },
+        "npc_involved": [
+            "Ivy"
+        ]
+    }
+]
