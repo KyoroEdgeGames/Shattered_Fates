@@ -15,7 +15,7 @@ import logging
 from typing import Dict, Any, List, Optional, Union
 
 # type: ignore
-import pygame # type: ignore
+import pygame 
 
 
 # --- Logging setup ---
