@@ -85,6 +85,12 @@ except ImportError:
     except AttributeError:
         pass
 
+try:
+    # animation module may depend on arcade being importable; import when available
+    from animation import load_animations  # type: ignore
+except (ImportError, ModuleNotFoundError):
+    load_animations = lambda *a, **k: {}
+
 # Provide a stable base class alias for static analysis and dynamic use.
 BaseWindow = getattr(arcade, "Window", object)
 
@@ -318,6 +324,13 @@ class DevMode:
         self.panel_bottom = 440.0
         self.panel_width = 260.0
         self.panel_height = 210.0
+        # Load animations from assets/Animation (if available)
+        try:
+            self.animations: Dict[str, Any] = load_animations()
+        except (ImportError, OSError, ValueError):
+            self.animations = {}
+        self.current_animation: Optional[str] = next(iter(self.animations.keys()), None)
+        self._last_dt_time = 0.0
 
     # --- Public control ---
     def toggle(self) -> None:
@@ -373,6 +386,17 @@ class DevMode:
             return
         if text and text.isprintable():
             self.input_text += text
+
+    def update(self, dt: float) -> None:
+        """Advance animations by `dt` seconds. Call from your Window.on_update(dt)."""
+        if not self.active:
+            return
+        if self.current_animation and self.current_animation in self.animations:
+            anim = self.animations[self.current_animation]
+            try:
+                anim.update(dt)
+            except (AttributeError, TypeError, ValueError, OSError):
+                pass
 
     # --- Drawing ---
     def draw(self) -> None:
@@ -448,38 +472,41 @@ class DevMode:
             self.font_size,
         )
 
-        # Example sprite preview (uses first matching sprite such as 'lineart.png')
-        try:
-            sprite_candidate = load_sprite("lineart.png")
-        except (OSError, ValueError):
-            sprite_candidate = None
-
-        tex = None
-        if isinstance(sprite_candidate, str):
-            load_fn = getattr(arcade, "load_texture", None)
-            if callable(load_fn):
-                try:
-                    tex = load_fn(sprite_candidate)
-                except (OSError, ValueError):
-                    tex = None
-        elif sprite_candidate is not None:
-            tex = sprite_candidate
-
-        draw_fn = getattr(arcade, "draw_texture_rectangle", None)
-        if tex and callable(draw_fn):
+        # Animated preview from assets/Animation (if any)
+        if self.current_animation and self.current_animation in self.animations:
+            anim = self.animations[self.current_animation]
+            frame = None
             try:
-                w = getattr(tex, "width", 64)
-                h = getattr(tex, "height", 64)
-                draw_fn(
-                    self.panel_left + self.panel_width + 60,
-                    self.panel_bottom + self.panel_height - 40,
-                    w,
-                    h,
-                    tex,
-                )
-            except (AttributeError, TypeError, OSError):
-                # Non-fatal drawing failure — skip preview
-                pass
+                frame = anim.get_frame()
+            except (AttributeError, TypeError):
+                frame = None
+
+            if frame is not None:
+                draw_fn = getattr(arcade, "draw_texture_rectangle", None)
+                if callable(draw_fn):
+                    try:
+                        if isinstance(frame, str):
+                            # frame is a path, try to load texture
+                            tex = getattr(arcade, "load_texture", None)
+                            if callable(tex):
+                                tex_obj = tex(frame)
+                            else:
+                                tex_obj = None
+                        else:
+                            tex_obj = frame
+
+                        if tex_obj is not None:
+                            w = getattr(tex_obj, "width", 64)
+                            h = getattr(tex_obj, "height", 64)
+                            draw_fn(
+                                self.panel_left + self.panel_width + 60,
+                                self.panel_bottom + self.panel_height - 40,
+                                w,
+                                h,
+                                tex_obj,
+                            )
+                    except (AttributeError, TypeError, OSError):
+                        pass
 
 
 # --- Main game window ---
