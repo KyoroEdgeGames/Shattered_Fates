@@ -85,11 +85,26 @@ except ImportError:
     except AttributeError:
         pass
 
+# Optional pygame import for audio fallback (keep silent if unavailable)
+try:
+    import pygame  # type: ignore
+    _pygame_available = True
+except (ImportError, ModuleNotFoundError):
+    pygame = None  # type: ignore
+    _pygame_available = False
+
 try:
     # animation module may depend on arcade being importable; import when available
     from animation import load_animations  # type: ignore
 except (ImportError, ModuleNotFoundError):
     load_animations = lambda *a, **k: {}
+
+# Preload animations once for helper functions and DevMode use.
+ANIMATIONS: Dict[str, Any] = {}
+try:
+    ANIMATIONS = load_animations()
+except (ImportError, OSError, ValueError):
+    ANIMATIONS = {}
 
 # Provide a stable base class alias for static analysis and dynamic use.
 BaseWindow = getattr(arcade, "Window", object)
@@ -147,6 +162,40 @@ SPRITE_DIR = os.path.normpath(os.path.join(BASE_DIR, "sprites"))
 
 # Ensure character folder exists (so file checks won't error)
 os.makedirs(CHAR_DIR, exist_ok=True)
+# Audio directories
+AUDIO_DIR = os.path.join(BASE_DIR, "assets", "Audio")
+MUSIC_DIR = os.path.join(AUDIO_DIR, "music")
+SFX_DIR = os.path.join(AUDIO_DIR, "SFX")
+
+# Settings path
+SETTINGS_PATH = os.path.join(BASE_DIR, "Settings", "game_settings.json")
+
+
+def read_settings() -> Dict[str, Any]:
+    """Read user settings from `Settings/game_settings.json` with safe defaults."""
+    defaults = {
+        "resolution": [SCREEN_WIDTH, SCREEN_HEIGHT],
+        "volume": 70,
+        "multiplayer": False,
+        "multiplayer_role": "host",  # host or client
+        "multiplayer_host": "127.0.0.1",
+        "multiplayer_port": 50000,
+    }
+    data = read_json_safe(SETTINGS_PATH) or {}
+    # merge defaults
+    out: Dict[str, Any] = {}
+    out.update(defaults)
+    out.update({k: v for k, v in data.items() if v is not None})
+    return out
+
+
+def write_settings(settings: Dict[str, Any]) -> None:
+    try:
+        os.makedirs(os.path.dirname(SETTINGS_PATH), exist_ok=True)
+        with open(SETTINGS_PATH, "w", encoding="utf-8") as fh:
+            json.dump(settings, fh, indent=2)
+    except OSError:
+        logging.exception("Failed to write settings to %s", SETTINGS_PATH)
 
 
 # --- Utility functions ---
@@ -166,6 +215,16 @@ def clamp(value: float, minimum: float, maximum: float) -> float:
     return max(minimum, min(maximum, value))
 
 
+def point_in_button(x: float, y: float, button: Tuple[float, float, float, float]) -> bool:
+    """Utility: test whether a point is inside a center-based rect button."""
+    cx, cy, w, h = button
+    left = cx - w / 2
+    right = cx + w / 2
+    bottom = cy - h / 2
+    top = cy + h / 2
+    return left <= x <= right and bottom <= y <= top
+
+
 def load_npc(npc_name: str, fallback_index: int = 0) -> Dict[str, Any]:
     """Load NPC data from JSON, with fallbacks for missing keys."""
     path = os.path.join(CHAR_DIR, f"{npc_name}.json")
@@ -181,6 +240,36 @@ def load_npc(npc_name: str, fallback_index: int = 0) -> Dict[str, Any]:
             if k not in {"name", "sprite", "level", "dialogue"}
         },
     }
+
+
+def get_npc_visual(npc_name: str) -> Optional[Any]:
+    """Return an animation object or texture/path for an NPC.
+
+    Priority:
+    - If an animation exists in `assets/Animation/<npc_name>/`, return the Animation object.
+    - Else, if the NPC JSON has a `sprite` field and the file exists in `SPRITE_DIR`, return the texture (via arcade) or path.
+    - Otherwise return None.
+    """
+    # Check preloaded animations
+    anim = ANIMATIONS.get(npc_name)
+    if anim is not None:
+        return anim
+
+    # Fallback to sprite file referenced in NPC JSON
+    info = read_json_safe(os.path.join(CHAR_DIR, f"{npc_name}.json")) or {}
+    sprite_name = info.get("sprite") or info.get("Sprite")
+    if sprite_name:
+        p = sprite_path(sprite_name)
+        if p:
+            loader = getattr(arcade, "load_texture", None)
+            if callable(loader):
+                try:
+                    return loader(p)
+                except (OSError, ValueError):
+                    return p
+            return p
+
+    return None
 
 
 def load_npc_physical(npc_name: str, fallback_index: int = 0) -> Dict[str, Any]:
@@ -263,6 +352,149 @@ def load_sprite(sprite_name: str) -> Optional[Any]:
     return path
 
 
+# --- Audio helpers ---
+def _find_audio_path(audio_dir: str, name: str) -> str:
+    if not name:
+        return ""
+    candidate = os.path.join(audio_dir, name)
+    if os.path.exists(candidate):
+        return candidate
+    for ext in (".ogg", ".mp3", ".wav"):
+        p = candidate + ext
+        if os.path.exists(p):
+            return p
+    return ""
+
+
+def _arcade_load_sound(path: str) -> Optional[Any]:
+    loader = getattr(arcade, "load_sound", None)
+    if callable(loader):
+        try:
+            return loader(path)
+        except (OSError, ValueError):
+            return None
+    return None
+
+
+def load_sound(name: str) -> Optional[Any]:
+    """Load an SFX by name (searches `SFX_DIR`). Returns a sound object or path."""
+    path = _find_audio_path(SFX_DIR, name)
+    if not path:
+        return None
+    snd = _arcade_load_sound(path)
+    return snd or path
+
+
+def play_sound(sound: Any, volume: float = 1.0) -> Optional[Any]:
+    """Play a short sound effect. Accepts a loaded sound object or filename."""
+    # Resolve string -> sound
+    if isinstance(sound, str):
+        snd = load_sound(sound)
+        if snd is None:
+            return None
+        sound = snd
+
+    # Prefer arcade.play_sound
+    play_fn = getattr(arcade, "play_sound", None)
+    if callable(play_fn):
+        try:
+            return play_fn(sound, volume)
+        except (TypeError, OSError):
+            # Continue to other fallbacks
+            pass
+
+    # If the object has a play method, call it
+    play_method = getattr(sound, "play", None)
+    if callable(play_method):
+        try:
+            return play_method()
+        except (AttributeError, TypeError):
+            pass
+
+    # Fallback to pygame mixer if available
+    if _pygame_available:
+        try:
+            pg = pygame  # type: ignore
+            mixer = getattr(pg, "mixer", None)
+            if mixer is None:
+                return None
+            if isinstance(sound, str):
+                getattr(mixer, "init", lambda: None)()
+                SoundClass = getattr(mixer, "Sound", None)
+                if SoundClass is None:
+                    return None
+                s = SoundClass(sound)
+                return getattr(s, "play", lambda: None)()
+            # If we somehow got a pygame.Sound-like object
+            return getattr(sound, "play", lambda: None)()
+        except (OSError, RuntimeError):
+            return None
+
+    return None
+
+
+def play_music_file(name_or_path: str, loop: bool = True, volume: float = 0.5) -> Optional[Any]:
+    """Play background music from `assets/Audio/music` or an absolute path.
+
+    Returns a handle for the backend used, or None on failure.
+    """
+    # Resolve to a file path
+    path = name_or_path
+    if not os.path.isabs(path):
+        path = _find_audio_path(MUSIC_DIR, name_or_path) or path
+    if not os.path.exists(path):
+        return None
+
+    # Try arcade first
+    snd = _arcade_load_sound(path)
+    if snd is not None:
+        play_fn = getattr(arcade, "play_sound", None)
+        if callable(play_fn):
+            try:
+                return play_fn(snd, volume)
+            except (TypeError, OSError):
+                pass
+
+    # Fallback to pygame mixer music
+    if _pygame_available:
+        try:  # Try pygame mixer if arcade cannot play sound
+            pg = pygame  # type: ignore
+            mixer = getattr(pg, "mixer", None)
+            if mixer is None:
+                return None
+            music = getattr(mixer, "music", None)
+            if music is None:
+                return None
+            getattr(mixer, "init", lambda: None)()
+            getattr(music, "load", lambda *_: None)(path)
+            getattr(music, "set_volume", lambda *_: None)(volume)
+            getattr(music, "play", lambda *_: None)(-1 if loop else 0)
+            return "pygame_music"
+        except (OSError, RuntimeError):
+            return None
+
+    return None
+
+
+def stop_music() -> bool:
+    """Stop background music if a backend supports it. Returns True if stopped."""
+    if _pygame_available:
+        try:
+            pg = pygame  # type: ignore
+            mixer = getattr(pg, "mixer", None)
+            music = getattr(mixer, "music", None) if mixer is not None else None
+            get_init = getattr(mixer, "get_init", None)
+            if callable(get_init) and get_init():
+                stop_fn = getattr(music, "stop", None)
+                if callable(stop_fn):
+                    stop_fn()
+                    return True
+        except (OSError, RuntimeError):
+            return False
+    # No generic stop for arcade's simple API
+    return False
+
+
 # --- Developer mode utilities ---
 class Player:
     """Represents a player entity in developer mode with inventory and experience."""
@@ -316,6 +548,11 @@ class DevMode:
         self.buttons: Dict[str, DevMode.Button] = {
             "Give Item": (125.0, 525.0, 150.0, 40.0),
             "Give XP": (125.0, 475.0, 150.0, 40.0),
+            "Prev Anim": (125.0, 425.0, 150.0, 30.0),
+            "Next Anim": (125.0, 385.0, 150.0, 30.0),
+            "Toggle Music": (125.0, 345.0, 150.0, 30.0),
+            "Prev Track": (125.0, 305.0, 70.0, 26.0),
+            "Next Track": (205.0, 305.0, 70.0, 26.0),
         }
 
         self.input_mode: Optional[str] = None  # "item" | "xp" | None
@@ -331,6 +568,13 @@ class DevMode:
             self.animations = {}
         self.current_animation: Optional[str] = next(iter(self.animations.keys()), None)
         self._last_dt_time = 0.0
+        self._music_playing: bool = False
+        # Load available music files for UI
+        try:
+            self.music_files: List[str] = [f for f in os.listdir(MUSIC_DIR) if os.path.isfile(os.path.join(MUSIC_DIR, f))]
+        except OSError:
+            self.music_files = []
+        self._music_index: int = 0 if self.music_files else -1
 
     # --- Public control ---
     def toggle(self) -> None:
@@ -349,6 +593,10 @@ class DevMode:
         top = cy + h / 2
         return left <= x <= right and bottom <= y <= top
 
+    def point_in_button(self, x: float, y: float, button: Button) -> bool:
+        """Public wrapper for hit-testing a button rectangle."""
+        return DevMode._point_in_button(x, y, button)
+
     def on_mouse_press(self, x: float, y: float, _button: int, _modifiers: int) -> None:
         if not self.active:
             return
@@ -361,6 +609,45 @@ class DevMode:
                 elif name == "Give XP":
                     self.input_mode = "xp"
                     self.input_text = ""
+                elif name == "Prev Anim":
+                    keys = list(self.animations.keys())
+                    if keys:
+                        if self.current_animation in keys:
+                            i = keys.index(self.current_animation)
+                            self.current_animation = keys[(i - 1) % len(keys)]
+                        else:
+                            self.current_animation = keys[0]
+                elif name == "Next Anim":
+                    keys = list(self.animations.keys())
+                    if keys:
+                        if self.current_animation in keys:
+                            i = keys.index(self.current_animation)
+                            self.current_animation = keys[(i + 1) % len(keys)]
+                        else:
+                            self.current_animation = keys[0]
+                elif name == "Prev Track":
+                    if self.music_files:
+                        self._music_index = (self._music_index - 1) % len(self.music_files)
+                        # auto-play selected track
+                        stop_music()
+                        handle = play_music_file(self.music_files[self._music_index])
+                        self._music_playing = handle is not None
+                elif name == "Next Track":
+                    if self.music_files:
+                        self._music_index = (self._music_index + 1) % len(self.music_files)
+                        stop_music()
+                        handle = play_music_file(self.music_files[self._music_index])
+                        self._music_playing = handle is not None
+                elif name == "Toggle Music":
+                    # Simple toggle: attempt to play/stop a default music file
+                    if self._music_playing:
+                        stop_music()
+                        self._music_playing = False
+                    else:
+                        # Try a default music file name; this will search MUSIC_DIR
+                        handle = play_music_file("Music_Map/loop.ogg")
+                        if handle is not None:
+                            self._music_playing = True
                 return
 
     def on_key_press(self, symbol: int, _modifiers: int) -> None:
@@ -380,6 +667,18 @@ class DevMode:
         # Backspace removes character
         if self.input_mode and symbol == arcade.key.BACKSPACE:
             self.input_text = self.input_text[:-1]
+
+        # F2 cycles animations forward
+        if symbol == getattr(arcade.key, "F2", None):
+            keys = list(self.animations.keys())
+            if not keys:
+                return
+            try:
+                idx = keys.index(self.current_animation) if self.current_animation in keys else -1
+            except ValueError:
+                idx = -1
+            idx = (idx + 1) % len(keys)
+            self.current_animation = keys[idx]
 
     def on_text(self, text: str) -> None:
         if not self.active or not self.input_mode:
@@ -528,6 +827,60 @@ class GameWindow(BaseWindow):  # type: ignore
         self.dev_player = Player()
         self.dev_ui = DevMode(self.dev_player, self, font_size=14)
 
+        # Networking / multiplayer support (optional)
+        self._net_id = None
+        self.network_server = None
+        self.network_client = None
+        self.other_players: Dict[str, Dict[str, float]] = {}
+        try:
+            settings = read_settings()
+            if settings.get("multiplayer"):
+                # generate network id
+                try:
+                    import uuid
+
+                    self._net_id = str(uuid.uuid4())
+                except ImportError:
+                    # uuid should be available in stdlib; fall back to a simple id
+                    self._net_id = f"player-{id(self)}"
+
+                # try to import multiplayer helpers
+                try:
+                    from tools.multiplayer import UDPLobbyServer, UDPClient  # type: ignore
+
+                    role = settings.get("multiplayer_role", "host")
+                    host = settings.get("multiplayer_host", "127.0.0.1")
+                    port = int(settings.get("multiplayer_port", 50000))
+                    if role == "host":
+                        # start server and also a client to receive forwarded messages
+                        try:
+                            self.network_server = UDPLobbyServer(host="0.0.0.0", port=port)
+                            self.network_server.start()
+                        except (OSError, RuntimeError) as exc:
+                            logging.debug("Failed to start UDPLobbyServer: %s", exc)
+                            self.network_server = None
+                        try:
+                            self.network_client = UDPClient(host, port, on_message=self._on_network_msg)
+                            self.network_client.start()
+                        except (OSError, RuntimeError, ValueError) as exc:
+                            logging.debug("Failed to start UDPClient (host client): %s", exc)
+                            self.network_client = None
+                    else:
+                        try:
+                            self.network_client = UDPClient(host, port, on_message=self._on_network_msg)
+                            self.network_client.start()
+                        except (OSError, RuntimeError, ValueError) as exc:
+                            logging.debug("Failed to start UDPClient (client role): %s", exc)
+                            self.network_client = None
+                except (ImportError, ModuleNotFoundError) as exc:
+                    # multiplayer module not available; ignore and leave network None
+                    logging.debug("multiplayer helpers not available: %s", exc)
+                    self.network_server = None
+                    self.network_client = None
+        except (OSError, ValueError, TypeError) as exc:
+            # settings failure should not break window; log for debugging
+            logging.debug("Failed to read settings for GameWindow: %s", exc)
+
         # Load example NPCs (positions staggered so they don't overlap)
         npc_names = ["Ivypaw", "Bramblekit"]
         self.npcs: List[Dict[str, Any]] = []
@@ -617,6 +970,45 @@ class GameWindow(BaseWindow):  # type: ignore
             else:
                 self.currently_colliding[npc["name"]] = False
 
+        # Networking: periodically send our position to peers
+        # Networking: periodically send our position to peers
+        client = getattr(self, "network_client", None)
+        net_id = getattr(self, "_net_id", None)
+        if client is not None and net_id:
+            msg = f"POS|{net_id}|{int(self.player_x)}|{int(self.player_y)}"
+            # Tell static analyzers this is expected to be a callable send function
+            from typing import Callable, cast
+
+            send_fn = cast(Optional[Callable[[str], Any]], getattr(client, "send", None))
+            if send_fn is not None:
+                try:
+                    send_fn(msg)
+                except (OSError, RuntimeError) as exc:
+                    logging.debug("Failed to send network message: %s", exc)
+
+    def _on_network_msg(self, msg: str) -> None:
+        """Handle incoming network messages from other peers (simple protocol)."""
+        if not msg:
+            return
+        # expected format: POS|id|x|y
+        try:
+            parts = msg.split("|")
+        except AttributeError:
+            # msg was not a string
+            return
+
+        if parts and parts[0] == "POS" and len(parts) >= 4:
+            pid = parts[1]
+            if pid == getattr(self, "_net_id", None):
+                return
+            try:
+                x = float(parts[2])
+                y = float(parts[3])
+            except (ValueError, TypeError):
+                return
+            # update or create simple player entry
+            self.other_players[pid] = {"x": x, "y": y}
+
     @staticmethod
     def _rects_collide(
         x1: float,
@@ -664,6 +1056,146 @@ class GameWindow(BaseWindow):  # type: ignore
         self.dev_ui.draw()
 
 
+# --- Main menu window ---
+class MainMenuWindow(BaseWindow):  # type: ignore
+    """A simple main menu that can start the game, open settings, toggle dev mode, or quit."""
+
+    def __init__(self) -> None:
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Shattered Fates - Menu")
+        _arcade_set_background_color(arcade.color.DARK_SLATE_GRAY)
+        self.buttons = {
+            "Start Game": (SCREEN_WIDTH / 2, 320, 240, 48),
+            "Settings": (SCREEN_WIDTH / 2, 260, 240, 40),
+            "Toggle Dev": (SCREEN_WIDTH / 2, 200, 240, 36),
+            "Quit": (SCREEN_WIDTH / 2, 140, 240, 36),
+        }
+        self.dev_player = Player()
+        self.dev_ui = DevMode(self.dev_player, self, font_size=14)
+
+    def on_draw(self) -> None:
+        self.clear()
+        _arcade_draw_text(
+            "Shattered Fates",
+            SCREEN_WIDTH / 2 - 180,
+            SCREEN_HEIGHT - 140,
+            arcade.color.WHITE,
+            36,
+        )
+
+        for name, (cx, cy, w, h) in self.buttons.items():
+            _arcade_draw_rectangle_filled(cx, cy, w, h, arcade.color.DARK_GRAY)
+            _arcade_draw_text(name, cx - w / 2 + 12, cy - 10, arcade.color.WHITE, 18)
+
+        # Draw dev UI if active
+        self.dev_ui.draw()
+
+    def on_mouse_press(self, x: float, y: float, _button: int, _modifiers: int) -> None:
+        for name, rect in self.buttons.items():
+            if self.dev_ui.point_in_button(x, y, rect):
+                if name == "Start Game":
+                    # Instantiate the game window (actual window/switching handled by runtime)
+                    _ = GameWindow()
+                elif name == "Settings":
+                    # Open settings UI
+                    _ = SettingsWindow()
+                elif name == "Toggle Dev":
+                    self.dev_ui.toggle()
+                elif name == "Quit":
+                    exit_fn = getattr(arcade, "exit", None)
+                    if callable(exit_fn):
+                        try:
+                            exit_fn()
+                        except Exception as exc:  # pragma: no cover - platform dependent
+                            raise SystemExit() from exc
+                    else:
+                        raise SystemExit()
+
+    def on_key_press(self, symbol: int, modifiers: int) -> None:
+        # Forward to dev UI and allow F1 toggle
+        if symbol == arcade.key.F1:
+            self.dev_ui.toggle()
+            return
+        self.dev_ui.on_key_press(symbol, modifiers)
+
+
+class SettingsWindow(BaseWindow):  # type: ignore
+    """Simple settings UI: resolution, volume, and multiplayer toggles."""
+
+    def __init__(self) -> None:
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Settings")
+        _arcade_set_background_color(arcade.color.DARK_SLATE_GRAY)
+        self.settings = read_settings()
+        # Buttons: label -> (cx, cy, w, h)
+        self.buttons = {
+            "Resolution": (SCREEN_WIDTH / 2, 380, 300, 40),
+            "Volume -": (SCREEN_WIDTH / 2 - 80, 320, 120, 36),
+            "Volume +": (SCREEN_WIDTH / 2 + 80, 320, 120, 36),
+            "Multiplayer Toggle": (SCREEN_WIDTH / 2, 260, 300, 36),
+            "Role Toggle": (SCREEN_WIDTH / 2, 220, 300, 36),
+            "Host": (SCREEN_WIDTH / 2, 180, 300, 36),
+            "Port": (SCREEN_WIDTH / 2, 140, 300, 36),
+            "Save": (SCREEN_WIDTH / 2 - 80, 80, 140, 36),
+            "Back": (SCREEN_WIDTH / 2 + 80, 80, 140, 36),
+        }
+
+    def on_draw(self) -> None:
+        self.clear()
+        _arcade_draw_text("Settings", SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT - 120, arcade.color.WHITE, 32)
+        # Draw buttons and values
+        for name, (cx, cy, w, h) in self.buttons.items():
+            _arcade_draw_rectangle_filled(cx, cy, w, h, arcade.color.DARK_GRAY)
+            _arcade_draw_text(name, cx - w / 2 + 12, cy - 10, arcade.color.WHITE, 14)
+
+        # Show current values
+        res = self.settings.get("resolution", [SCREEN_WIDTH, SCREEN_HEIGHT])
+        _arcade_draw_text(f"Resolution: {res[0]}x{res[1]}", SCREEN_WIDTH / 2 - 140, 400, arcade.color.LIGHT_GRAY, 12)
+        _arcade_draw_text(f"Volume: {self.settings.get('volume', 70)}", SCREEN_WIDTH / 2 - 140, 340, arcade.color.LIGHT_GRAY, 12)
+        _arcade_draw_text(f"Multiplayer: {self.settings.get('multiplayer')}", SCREEN_WIDTH / 2 - 140, 280, arcade.color.LIGHT_GRAY, 12)
+        _arcade_draw_text(f"Role: {self.settings.get('multiplayer_role')}", SCREEN_WIDTH / 2 - 140, 240, arcade.color.LIGHT_GRAY, 12)
+        _arcade_draw_text(f"Host: {self.settings.get('multiplayer_host')}", SCREEN_WIDTH / 2 - 140, 200, arcade.color.LIGHT_GRAY, 12)
+        _arcade_draw_text(f"Port: {self.settings.get('multiplayer_port')}", SCREEN_WIDTH / 2 - 140, 160, arcade.color.LIGHT_GRAY, 12)
+
+    def on_mouse_press(self, x: float, y: float, _button: int, _modifiers: int) -> None:
+        for name, rect in self.buttons.items():
+            if point_in_button(x, y, rect):
+                if name == "Resolution":
+                    # cycle between common resolutions
+                    opts = [(800, 600), (1024, 768), (1280, 720), (1366, 768)]
+                    cur = tuple(self.settings.get("resolution", [800, 600]))
+                    try:
+                        idx = opts.index(cur)
+                    except ValueError:
+                        idx = 0
+                    idx = (idx + 1) % len(opts)
+                    self.settings["resolution"] = list(opts[idx])
+                elif name == "Volume -":
+                    v = int(self.settings.get("volume", 70))
+                    self.settings["volume"] = max(0, v - 10)
+                elif name == "Volume +":
+                    v = int(self.settings.get("volume", 70))
+                    self.settings["volume"] = min(100, v + 10)
+                elif name == "Multiplayer Toggle":
+                    self.settings["multiplayer"] = not bool(self.settings.get("multiplayer"))
+                elif name == "Role Toggle":
+                    cur = self.settings.get("multiplayer_role", "host")
+                    self.settings["multiplayer_role"] = "client" if cur == "host" else "host"
+                elif name == "Host":
+                    # toggle between localhost and empty for quick testing
+                    cur = self.settings.get("multiplayer_host", "127.0.0.1")
+                    self.settings["multiplayer_host"] = "127.0.0.1" if cur != "127.0.0.1" else "localhost"
+                elif name == "Port":
+                    p = int(self.settings.get("multiplayer_port", 50000))
+                    # cycle a small set of ports
+                    p = 50000 if p != 50000 else 50001
+                    self.settings["multiplayer_port"] = p
+                elif name == "Save":
+                    write_settings(self.settings)
+                    _ = MainMenuWindow()
+                elif name == "Back":
+                    _ = MainMenuWindow()
+                return
+
+
 def main() -> None:
     """Start the arcade application.
 
@@ -681,7 +1213,13 @@ def main() -> None:
         return
 
     try:
-        _window = GameWindow()
+        # Start at the main menu window by default
+        _window = None
+        try:
+            _window = MainMenuWindow()
+        except NameError:
+            # If MainMenuWindow isn't defined (older code path), fall back to GameWindow
+            _window = GameWindow()
         arcade.run()
     except Exception as exc:  # pragma: no cover - runtime environment dependent
         # Detect common platform/driver errors and provide guidance rather
