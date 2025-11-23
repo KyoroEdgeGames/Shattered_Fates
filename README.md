@@ -23,7 +23,7 @@
 
 This repository is intended for collaborative development and reference. For more information, updates, and community engagement, please visit:  
 
-- **Portfolio Website:** [Kyoro Edge Portfolio](#)  
+Help us by visiting our official links!
 - **Patreon:** [[Kyoro Edge Patreon]](https://www.patreon.com/c/kyoroedgestudios)(#)  
 - **Discord Server:** [[Join the Community]](https://discord.gg/ZEQjBnSppP)(#)
 
