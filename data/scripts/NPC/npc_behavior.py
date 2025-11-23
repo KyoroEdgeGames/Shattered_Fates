@@ -7,6 +7,7 @@ Handles NPC dialogue, quests, and other interactions.
 
 from typing import List, Optional
 
+
 class NPC:
     """
     Represents a non-player character (NPC) in the game.

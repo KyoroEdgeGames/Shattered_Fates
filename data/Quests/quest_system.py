@@ -7,6 +7,7 @@ Handles loading, starting, and managing quest data from JSON files.
 import json
 import os
 
+
 class Quest:
     """
     Represents a quest loaded from a JSON file.
