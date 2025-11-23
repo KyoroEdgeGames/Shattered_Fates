@@ -3,6 +3,7 @@
 Provides a `pygame` object with only the attributes `dev_mode.py` needs.
 This file lives in the project root so it can be imported as a fallback.
 """
+
 from __future__ import annotations
 
 import types

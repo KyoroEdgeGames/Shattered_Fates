@@ -5,6 +5,7 @@ Provides a simple Arcade window-friendly DevMode class, player utilities,
 and JSON helpers. This file converts the previously pygame-based UI to use
 arcade drawing and event conventions.
 """
+
 from __future__ import annotations
 
 import json
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
 try:
     import arcade  # type: ignore[import]
 except ImportError:
+
     class _ArcadeStub:  # pragma: no cover
         class key:
             ENTER = 13
@@ -92,7 +94,9 @@ BaseWindow = getattr(arcade, "Window", object)
 def _arcade_draw_lrbt_rectangle_filled(*args, **kwargs):
     func = getattr(arcade, "draw_lrbt_rectangle_filled", None)
     if not callable(func):
-        func = getattr(getattr(arcade, "Window", object), "draw_lrbt_rectangle_filled", None)
+        func = getattr(
+            getattr(arcade, "Window", object), "draw_lrbt_rectangle_filled", None
+        )
     if callable(func):
         return func(*args, **kwargs)
 
@@ -165,7 +169,11 @@ def load_npc(npc_name: str, fallback_index: int = 0) -> Dict[str, Any]:
         "sprite": data.get("sprite", f"npc_{fallback_index}.png"),
         "level": data.get("level", 1),
         "dialogue": data.get("dialogue", []),
-        **{k: v for k, v in data.items() if k not in {"name", "sprite", "level", "dialogue"}},
+        **{
+            k: v
+            for k, v in data.items()
+            if k not in {"name", "sprite", "level", "dialogue"}
+        },
     }
 
 
@@ -416,7 +424,9 @@ class GameWindow(BaseWindow):  # type: ignore
             npc = load_npc_physical(name, fallback_index=idx)
             self.npcs.append(npc)
 
-        self.currently_colliding: Dict[str, bool] = {npc["name"]: False for npc in self.npcs}
+        self.currently_colliding: Dict[str, bool] = {
+            npc["name"]: False for npc in self.npcs
+        }
 
         # Keyboard state
         self.held_keys: Dict[int, bool] = {}
@@ -497,13 +507,24 @@ class GameWindow(BaseWindow):  # type: ignore
                 self.currently_colliding[npc["name"]] = False
 
     @staticmethod
-    def _rects_collide(x1: float, y1: float, w1: float, h1: float, x2: float, y2: float, w2: float, h2: float) -> bool:
+    def _rects_collide(
+        x1: float,
+        y1: float,
+        w1: float,
+        h1: float,
+        x2: float,
+        y2: float,
+        w2: float,
+        h2: float,
+    ) -> bool:
         """Axis-aligned rectangle collision test. These are corner-based rectangles."""
         left1, right1 = x1, x1 + w1
         bottom1, top1 = y1, y1 + h1
         left2, right2 = x2, x2 + w2
         bottom2, top2 = y2, y2 + h2
-        return not (right1 <= left2 or right2 <= left1 or top1 <= bottom2 or top2 <= bottom1)
+        return not (
+            right1 <= left2 or right2 <= left1 or top1 <= bottom2 or top2 <= bottom1
+        )
 
     # --- Drawing ---
     def on_draw(self) -> None:
@@ -555,15 +576,25 @@ def main() -> None:
         # Detect common platform/driver errors and provide guidance rather
         # than crashing with a low-level traceback the user may not parse.
         msg = str(exc)
-        if "glGetStringi" in msg or "OpenGL 3.0" in msg or "MissingFunctionException" in type(exc).__name__:
-            print("Unable to create an OpenGL context. Your system OpenGL driver may be too old or missing.")
+        if (
+            "glGetStringi" in msg
+            or "OpenGL 3.0" in msg
+            or "MissingFunctionException" in type(exc).__name__
+        ):
+            print(
+                "Unable to create an OpenGL context. Your system OpenGL driver may be too old or missing."
+            )
             print("Suggestions:")
             print(" - Update your GPU drivers (Windows Update or vendor drivers).")
             print(" - Run this program on a machine with a modern GPU/driver.")
-            print(" - For CI/headless runs, start with `python main.py --no-window` instead.")
+            print(
+                " - For CI/headless runs, start with `python main.py --no-window` instead."
+            )
             return
         if isinstance(exc, RuntimeError) and "Arcade not available" in msg:
-            print("Arcade package not available in this environment. Install it or run with --no-window.")
+            print(
+                "Arcade package not available in this environment. Install it or run with --no-window."
+            )
             return
         # Unknown error: re-raise so it's visible during debugging
         raise

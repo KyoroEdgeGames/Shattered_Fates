@@ -6,6 +6,7 @@ Provides player with options to start a new game, load a save,
 access settings, or exit the game.
 """
 
+
 def main_menu():
     """
     Displays the main menu of Shattered Fates and handles player selection.
@@ -36,6 +37,7 @@ def main_menu():
         else:
             print("Invalid choice. Try again.")
 
+
 def start_new_game():
     """
     Handles starting a new game.
@@ -53,6 +55,7 @@ def start_new_game():
     else:
         print("Invalid choice. Returning to main menu.")
 
+
 def create_custom_cat():
     """
     Allows the player to create a custom cat character.
@@ -60,17 +63,26 @@ def create_custom_cat():
     """
     print("\n--- Create Your Custom Cat ---")
     name = input("Enter your cat's name: ").strip()
-    clan = input("Enter your clan (Lostclan, Frostclan, Heavyclan, Bloodclan): ").strip()
+    clan = input(
+        "Enter your clan (Lostclan, Frostclan, Heavyclan, Bloodclan): "
+    ).strip()
     sex = input("Enter your cat's sex (male/female): ").strip()
     # Optional: age stage could be kit, apprentice, warrior
-    age_stage = input("Enter age stage (kit/apprentice/warrior) [default: kit]: ").strip().lower()
+    age_stage = (
+        input("Enter age stage (kit/apprentice/warrior) [default: kit]: ")
+        .strip()
+        .lower()
+    )
     if age_stage not in ["kit", "apprentice", "warrior"]:
         age_stage = "kit"
 
-    print(f"\nCustom cat created!\nName: {name}\nClan: {clan}\nSex: {sex}\nAge Stage: {age_stage}")
+    print(
+        f"\nCustom cat created!\nName: {name}\nClan: {clan}\nSex: {sex}\nAge Stage: {age_stage}"
+    )
 
     # Here you would normally save to a character JSON file
     # or initialize the character object for gameplay.
+
 
 def select_main_npc():
     """
@@ -92,6 +104,7 @@ def select_main_npc():
     except ValueError:
         print("Invalid input. Returning to main menu.")
 
+
 def load_game():
     """
     Placeholder for load game functionality.
@@ -99,12 +112,14 @@ def load_game():
     """
     print("\nLoad Game feature is not implemented yet.")
 
+
 def settings_menu():
     """
     Placeholder for settings menu functionality.
     Can be extended for audio, graphics, controls, etc.
     """
     print("\nSettings menu is not implemented yet.")
+
 
 # Entry point if this module is run directly
 if __name__ == "__main__":

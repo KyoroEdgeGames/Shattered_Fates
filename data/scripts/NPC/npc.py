@@ -5,6 +5,7 @@ Defines the NPC class, which manages non-player character attributes,
 dialogue, and quest offerings.
 """
 
+
 class NPC:
     """
     Represents a non-player character in the game.
@@ -14,6 +15,7 @@ class NPC:
         clan (str): The NPC's clan.
         quests (list): List of quests offered by the NPC.
     """
+
     def __init__(self, name, clan, quests=None):
         """
         Initializes a new NPC instance.

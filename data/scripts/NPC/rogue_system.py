@@ -4,6 +4,7 @@ Rogue trader system for Shattered Fates.
 Defines the RogueTrader class, which allows players to buy items from a trader NPC.
 """
 
+
 class RogueTrader:
     """
     Represents a rogue trader NPC who sells items to the player.
@@ -12,6 +13,7 @@ class RogueTrader:
         name (str): The trader's name.
         items_for_sale (dict): Items for sale with their prices and stock quantities.
     """
+
     def __init__(self, name="Wandering Rogue"):
         """
         Initializes the RogueTrader with a name and items for sale.
@@ -21,7 +23,7 @@ class RogueTrader:
         self.items_for_sale = {
             "Herb": [5, 10],
             "Mouse Tail": [3, 5],
-            "Stone Claw": [8, 2]
+            "Stone Claw": [8, 2],
         }
 
     def display_stock(self):
@@ -90,10 +92,7 @@ class RogueTrader:
             print(f"Your inventory: {player.inventory}")
             print(f"Your coins: {player.currency}")
 
-            choice = input(
-                "Enter item you want to buy "
-                "(or 'exit'): "
-            ).strip()
+            choice = input("Enter item you want to buy " "(or 'exit'): ").strip()
             if choice.lower() == "exit":
                 print("Exiting trade...")
                 break
@@ -106,11 +105,7 @@ class RogueTrader:
 
                 # Ask for quantity
                 try:
-                    quantity = int(
-                        input(
-                            f"How many {choice}s do you want to buy? "
-                        )
-                    )
+                    quantity = int(input(f"How many {choice}s do you want to buy? "))
                     if quantity < 1:
                         print("Quantity must be at least 1.")
                         continue
@@ -128,9 +123,7 @@ class RogueTrader:
                     continue
 
                 # Add item(s) to inventory
-                player.inventory[choice] = (
-                    player.inventory.get(choice, 0) + quantity
-                )
+                player.inventory[choice] = player.inventory.get(choice, 0) + quantity
                 player.currency -= total_cost
                 self.items_for_sale[choice][1] -= quantity
                 print(
@@ -143,10 +136,8 @@ class RogueTrader:
                     del self.items_for_sale[choice]
 
             else:
-                print(
-                    "Item not available. "
-                    "Please choose from the listed items."
-                )
+                print("Item not available. " "Please choose from the listed items.")
+
 
 class NPC:
     """
@@ -163,6 +154,7 @@ class NPC:
         quests (list): Quests offered by the NPC.
         data (dict): Raw data dictionary.
     """
+
     def __init__(self, data):
         # data can be dict loaded from character JSON
         self.name = data.get("name")
@@ -204,12 +196,5 @@ class NPC:
         Returns:
             bool: True if the NPC can have kits, False otherwise.
         """
-        return (
-            self.age_stage in (
-                "warrior",
-                "elder"
-            )
-            and
-            self.role != "Medicine Cat"
-        )
+        return self.age_stage in ("warrior", "elder") and self.role != "Medicine Cat"
         # optional rule

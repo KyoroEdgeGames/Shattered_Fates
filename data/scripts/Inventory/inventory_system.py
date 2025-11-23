@@ -4,6 +4,7 @@ Inventory system module for Shattered Fates.
 Provides the Inventory class to manage a player's items and their quantities.
 """
 
+
 class Inventory:
     """
     Manages a collection of items and their quantities for a player.
@@ -11,6 +12,7 @@ class Inventory:
     Attributes:
         items (dict): Dictionary storing item names and their quantities.
     """
+
     def __init__(self):
         """
         Initializes an empty inventory.

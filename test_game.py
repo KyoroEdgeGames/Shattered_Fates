@@ -21,7 +21,7 @@ except ImportError:
         # The real `arcade.Window` calls `on_draw` when rendering; provide
         # a no-op run loop that calls `on_draw` once for convenience.
         def show(self):
-            if hasattr(self, 'on_draw'):
+            if hasattr(self, "on_draw"):
                 self.on_draw()
 
     def set_background_color(_):
@@ -32,17 +32,21 @@ except ImportError:
 
     def draw_rectangle_filled(x, y, width, height, color):
         # Simple text output so the stub does something visible in console.
-        print(f"[arcade stub] draw_rectangle_filled: x={x}, y={y}, w={width}, h={height}, color={color}")
+        print(
+            f"[arcade stub] draw_rectangle_filled: x={x}, y={y}, w={width}, h={height}, color={color}"
+        )
 
     def run():
         print("[arcade stub] run() called — exiting (no GUI available)")
 
-    arcade = types.SimpleNamespace(Window=_Window,
-                                   set_background_color=set_background_color,
-                                   start_render=start_render,
-                                   draw_rectangle_filled=draw_rectangle_filled,
-                                   run=run,
-                                   color=_Color)
+    arcade = types.SimpleNamespace(
+        Window=_Window,
+        set_background_color=set_background_color,
+        start_render=start_render,
+        draw_rectangle_filled=draw_rectangle_filled,
+        run=run,
+        color=_Color,
+    )
 
 
 SCREEN_HEIGHT = 600

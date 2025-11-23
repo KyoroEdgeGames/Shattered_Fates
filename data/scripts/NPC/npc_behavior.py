@@ -12,14 +12,17 @@ class NPC:
     """
     Represents a non-player character (NPC) in the game.
     """
+
     def __init__(self, name: str, clan: str, quests: Optional[List[str]] = None):
         self.name = name
         self.clan = clan
         self.quests = quests if quests is not None else []
 
+
 def talk(self):
     """Prints a greeting from the NPC."""
     print(f"{self.name} of {self.clan} says: Hello, traveler!")
+
 
 def give_quest(self):
     """Prints the list of quests the NPC offers."""

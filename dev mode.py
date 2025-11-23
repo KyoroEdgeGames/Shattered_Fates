@@ -16,7 +16,10 @@ from typing import Any, Optional
 
 try:
     import pygame  # type: ignore
-except (ImportError, ModuleNotFoundError):  # pragma: no cover - fallback for environments without pygame
+except (
+    ImportError,
+    ModuleNotFoundError,
+):  # pragma: no cover - fallback for environments without pygame
     # Use the project's lightweight stub module to keep runtime fallback
     # centralized in `pygame_stub.py`.
     from pygame_stub import pygame  # type: ignore
@@ -141,4 +144,3 @@ class DevMode:
                 self.screen.blit(input_surf, (input_rect.x + 5, input_rect.y + 5))
             except (AttributeError, TypeError):
                 pass
-

@@ -12,10 +12,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "Data")
 EVENTS_DIR = os.path.join(DATA_DIR, "Events")
 
+
 def read_json(path: str) -> dict:
     """Reads a JSON file and returns its contents as a dictionary."""
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 class StoryEvent:
     """Represents a single story event."""
@@ -24,7 +26,7 @@ class StoryEvent:
         self.name = event_data.get("name", "Unnamed Event")
         self.description = event_data.get("description", "")
         self.effects = event_data.get("effects", {})  # dictionary of changes
-        self.quest = event_data.get("quest", None)   # optional quest object
+        self.quest = event_data.get("quest", None)  # optional quest object
 
     def trigger_event(self) -> tuple:
         """
@@ -36,13 +38,16 @@ class StoryEvent:
         # Event can have effects applied to the game state
         return self.effects, self.quest
 
+
 class StorySystem:
     """Manages all story and seasonal events."""
 
     def __init__(self):
         # Load all event JSONs
         self.spring_events = read_json(os.path.join(EVENTS_DIR, "spring_events.json"))
-        self.seasonal_events = read_json(os.path.join(EVENTS_DIR, "seasonal_events.json"))
+        self.seasonal_events = read_json(
+            os.path.join(EVENTS_DIR, "seasonal_events.json")
+        )
         self.general_events = read_json(os.path.join(EVENTS_DIR, "general_events.json"))
 
     def get_random_event(self, event_type: str) -> StoryEvent:

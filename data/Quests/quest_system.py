@@ -16,6 +16,7 @@ class Quest:
         data (dict): The quest data loaded from the file.
         active (bool): Whether the quest is currently active.
     """
+
     def __init__(self, path):
         """
         Initializes a Quest instance by loading quest data from a JSON file.
@@ -44,6 +45,7 @@ class Quest:
         """
         self.active = True
         print(f"Quest '{self.data['name']}' started!")
+
 
 def load_quest(path):
     """

@@ -1,0 +1,14 @@
+﻿C:/Users/liama/OneDrive/Documents/Shattered_Fates/.venv311/Scripts/python.exe : Traceback (most recent call last):
+At line:1 char:1
++ C:/Users/liama/OneDrive/Documents/Shattered_Fates/.venv311/Scripts/py ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\liama\OneDrive\Documents\Shattered_Fates\main.py", line 542, in <module>
+    main()
+  File "C:\Users\liama\OneDrive\Documents\Shattered_Fates\main.py", line 538, in main
+    arcade.run()
+  File "C:\Users\liama\OneDrive\Documents\Shattered_Fates\main.py", line 72, in run
+    raise RuntimeError("Arcade not available")
+RuntimeError: Arcade not available

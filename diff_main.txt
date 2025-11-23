@@ -1,0 +1,48 @@
+﻿diff --git a/main.py b/main.py
+index f7d18e1..b7d8986 100644
+--- a/main.py
++++ b/main.py
+@@ -533,9 +533,40 @@ class GameWindow(BaseWindow):  # type: ignore
+ 
+ 
+ def main() -> None:
+-    """Start the arcade application."""
+-    _window = GameWindow()
+-    arcade.run()
++    """Start the arcade application.
++
++    If the runtime environment cannot create an OpenGL context (for example
++    on systems without a suitable GPU/driver), the function will print a
++    helpful message and exit. Use `--no-window` to skip creating a window
++    (useful for CI or headless runs).
++    """
++    import sys
++
++    no_window = "--no-window" in sys.argv or "--headless" in sys.argv
++
++    if no_window:
++        print("Headless mode: skipping window creation (--no-window passed).")
++        return
++
++    try:
++        _window = GameWindow()
++        arcade.run()
++    except Exception as exc:  # pragma: no cover - runtime environment dependent
++        # Detect common platform/driver errors and provide guidance rather
++        # than crashing with a low-level traceback the user may not parse.
++        msg = str(exc)
++        if "glGetStringi" in msg or "OpenGL 3.0" in msg or "MissingFunctionException" in type(exc).__name__:
++            print("Unable to create an OpenGL context. Your system OpenGL driver may be too old or missing.")
++            print("Suggestions:")
++            print(" - Update your GPU drivers (Windows Update or vendor drivers).")
++            print(" - Run this program on a machine with a modern GPU/driver.")
++            print(" - For CI/headless runs, start with `python main.py --no-window` instead.")
++            return
++        if isinstance(exc, RuntimeError) and "Arcade not available" in msg:
++            print("Arcade package not available in this environment. Install it or run with --no-window.")
++            return
++        # Unknown error: re-raise so it's visible during debugging
++        raise
+ 
+ 
+ if __name__ == "__main__":

@@ -5,6 +5,7 @@ Defines the Player class, which manages player attributes, movement, experience,
 leveling, and inventory management.
 """
 
+
 class Player:
     """
     Represents a player character in the game.
@@ -17,6 +18,7 @@ class Player:
         level (int): The player's current level.
         inventory (dict): The player's inventory with item quantities.
     """
+
     def __init__(self, name, clan="Lostclan"):
         """
         Initializes a new Player instance.

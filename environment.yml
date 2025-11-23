@@ -1,0 +1,8 @@
+name: shattered_fates
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - arcade
+  - pillow=11.0.0
+  - numpy
