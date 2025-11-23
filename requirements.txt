@@ -1,4 +1,19 @@
 arcade==3.3.3
+pyglet==2.1.11
+pymunk==6.9.0
+pytiled_parser==2.2.9
+pillow==11.3.0
+numpy==2.3.5
+
+# Minimal runtime deps (keep these pinned to match .venv311)
+attrs==25.4.0
+cffi==2.0.0
+pycparser==2.23
+typing_extensions==4.15.0
+
+# Optional / dev tools
+ruff==0.14.6
+arcade==3.3.3
 attrs==25.4.0
 cffi==2.0.0
 numpy==2.3.5
