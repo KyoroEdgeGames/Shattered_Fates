@@ -137,7 +137,7 @@ FPS = 60
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(BASE_DIR, "data"))
 CHAR_DIR = os.path.join(DATA_DIR, "Characters")
-SPRITE_DIR = os.path.normpath(os.path.join(BASE_DIR, "sprites", "cats"))
+SPRITE_DIR = os.path.normpath(os.path.join(BASE_DIR, "sprites"))
 
 # Ensure character folder exists (so file checks won't error)
 os.makedirs(CHAR_DIR, exist_ok=True)
@@ -204,6 +204,57 @@ def load_npc_physical(npc_name: str, fallback_index: int = 0) -> Dict[str, Any]:
         "width": w,
         "height": h,
     }
+
+
+# --- Sprite helpers ---
+def list_sprites() -> List[str]:
+    """Return list of sprite filenames in the sprites directory."""
+    try:
+        return [f for f in os.listdir(SPRITE_DIR) if os.path.isfile(os.path.join(SPRITE_DIR, f))]
+    except OSError:
+        return []
+
+
+def sprite_path(sprite_name: str) -> str:
+    """Return a filesystem path to `sprite_name`.
+
+    If `sprite_name` already includes an extension and exists, that path is
+    returned. Otherwise the function will try common image extensions.
+    Returns an empty string when not found.
+    """
+    if not sprite_name:
+        return ""
+
+    # If sprite_name already looks like a path, check directly
+    candidate = os.path.join(SPRITE_DIR, sprite_name)
+    if os.path.exists(candidate):
+        return candidate
+
+    # Try common image extensions
+    for ext in (".png", ".jpg", ".jpeg", ".gif"):
+        p = candidate + ext
+        if os.path.exists(p):
+            return p
+
+    return ""
+
+
+def load_sprite(sprite_name: str) -> Optional[Any]:
+    """Load a sprite as an `arcade` texture when possible, otherwise return
+    the filesystem path or None if not found.
+    """
+    path = sprite_path(sprite_name)
+    if not path:
+        return None
+
+    load_fn = getattr(arcade, "load_texture", None)
+    if callable(load_fn):
+        try:
+            return load_fn(path)
+        except (OSError, ValueError):
+            # Fall back to returning the path if arcade cannot load it at runtime
+            return path
+    return path
 
 
 # --- Developer mode utilities ---
