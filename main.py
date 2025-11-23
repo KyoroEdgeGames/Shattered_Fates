@@ -448,6 +448,39 @@ class DevMode:
             self.font_size,
         )
 
+        # Example sprite preview (uses first matching sprite such as 'lineart.png')
+        try:
+            sprite_candidate = load_sprite("lineart.png")
+        except (OSError, ValueError):
+            sprite_candidate = None
+
+        tex = None
+        if isinstance(sprite_candidate, str):
+            load_fn = getattr(arcade, "load_texture", None)
+            if callable(load_fn):
+                try:
+                    tex = load_fn(sprite_candidate)
+                except (OSError, ValueError):
+                    tex = None
+        elif sprite_candidate is not None:
+            tex = sprite_candidate
+
+        draw_fn = getattr(arcade, "draw_texture_rectangle", None)
+        if tex and callable(draw_fn):
+            try:
+                w = getattr(tex, "width", 64)
+                h = getattr(tex, "height", 64)
+                draw_fn(
+                    self.panel_left + self.panel_width + 60,
+                    self.panel_bottom + self.panel_height - 40,
+                    w,
+                    h,
+                    tex,
+                )
+            except (AttributeError, TypeError, OSError):
+                # Non-fatal drawing failure — skip preview
+                pass
+
 
 # --- Main game window ---
 class GameWindow(BaseWindow):  # type: ignore
