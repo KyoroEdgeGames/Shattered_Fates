@@ -39,7 +39,7 @@ General
 - Created a Discord server to build the Shattered Fates community.
 
 **October 24, 2025**  
-- Identified and resolved crash issues during playtesting in `test_game.py`.  
+- Identified and began work to resolve crash issues during playtesting in `test_game.py`.  
 - Fixed coding errors in `Main.py`.  
 - Added temporary game music for gameplay testing.  
 - Expanded the Kyoro Edge Crew with two new contributors.
