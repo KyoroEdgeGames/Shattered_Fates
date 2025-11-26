@@ -4,6 +4,8 @@
         "playable": true,
         "clan": "Lostclan",
         "age_stage": "kit",
+        "story_arc": "custom_branch",
+        "alignment_tendency": "neutral",
         "traits": {
             "agility": 5,
             "strength": 4,
@@ -16,13 +18,16 @@
         "playable": true,
         "clan": "Bloodclan",
         "age_stage": "kit",
+        "story_arc": "ivy",
+        "alignment_tendency": "evil",
         "traits": {
             "agility": 6,
             "strength": 7,
-            "necrotic_power": 5
+            "necrotic_power": 5,
+            "dominance": 6
         },
         "skills": [
-            "necrotic_strike",
+            "necrotic_slash",
             "claw_attack"
         ]
     },
@@ -31,12 +36,57 @@
         "playable": false,
         "clan": "Bloodclan",
         "age_stage": "kit",
+        "story_arc": "coal",
+        "alignment_tendency": "neutral",
         "traits": {
             "agility": 5,
-            "strength": 6
+            "strength": 6,
+            "loyalty": 7
         },
         "skills": [
             "stone_claws"
         ]
+    },
+    {
+        "name": "Silence",
+        "playable": false,
+        "clan": "Kittypet",
+        "age_stage": "queen",
+        "story_arc": "ivy",
+        "alignment_tendency": "good",
+        "traits": {
+            "nurture": 8,
+            "agility": 4,
+            "stealth": 5
+        },
+        "skills": ["protect_kit", "herbal_salve"]
+    },
+    {
+        "name": "Stolenstar",
+        "playable": false,
+        "clan": "Bloodclan",
+        "age_stage": "leader",
+        "story_arc": "ivy",
+        "alignment_tendency": "evil",
+        "traits": {
+            "agility": 7,
+            "strength": 8,
+            "regeneration": 9
+        },
+        "skills": ["leadership_rally", "regenerate"]
+    },
+    {
+        "name": "Scourgestar",
+        "playable": false,
+        "clan": "Bloodclan",
+        "age_stage": "elder",
+        "story_arc": "ivy",
+        "alignment_tendency": "evil",
+        "traits": {
+            "necrotic_power": 9,
+            "tactical": 8,
+            "intimidation": 9
+        },
+        "skills": ["necrotic_slash", "ferocious_roar"]
     }
 ]

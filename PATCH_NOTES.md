@@ -1,66 +1,60 @@
 # Patch Notes — Shattered_Fates workspace
 
-Date: 2025-11-26
+## 2025-11-26
 
-Summary
--------
-This patch series focuses on improving robustness, static-analysis friendliness, and networking safety across the workspace. The primary edits were made to `main.py` to narrow broad exception handling, harden multiplayer startup and message handling, and add better logging for debugging. A `CHANGELOG.md` was added summarizing the `main.py` fixes.
+Status: UNPLAYABLE (core gameplay windows refactored; networking and event data incomplete)
 
-Files changed / added
---------------------
-- `main.py` — tightened exception handling, safer network send/parsing, logging for network errors, and small static-analysis improvements.
-- `CHANGELOG.md` — human-readable changelog entry documenting the `main.py` fixes.
-- `PATCH_NOTES.md` — this file (workspace-wide patch notes summary).
+### Summary
+Today's session focused on structural cleanup, naming normalization, and lint/maintenance improvements rather than new playable features. The game remains unplayable pending restoration of full window logic, event data relocation, and networking re‑integration.
 
-Details (high level)
---------------------
-- UUID generation: replaced a broad `except Exception` with `ImportError` handling and deterministic fallback id.
-- Multiplayer startup: replaced broad exception catches around import and startup with targeted handling (`ImportError`, `ModuleNotFoundError`, and specific runtime errors like `OSError`, `RuntimeError`, `ValueError`) and debug logging.
-- Settings read: narrowed exception handling to `(OSError, ValueError, TypeError)` and logged failures at debug level.
-- Outgoing network messages: guarded against calling non-callable attributes, used `typing.cast` for analyzers, and limited caught exceptions during send to `(OSError, RuntimeError)` while logging failures.
-- Incoming network messages: validated `msg` type, split and validated parts, converted coordinates with explicit `(ValueError, TypeError)` handling. Malformed messages are ignored safely.
-- Static-analysis: reduced re-importing of typing names, used `cast` to inform type checkers, and removed broad exception blocks that hid bugs.
+### Key Changes
+- Quest Package Migration: Renamed `data/scripts/Quests` -> `data/scripts/quests`; added deprecation stubs raising clear `ImportError` for old uppercase path.
+- Quest Data Path: Normalized quest JSON constant to lowercase `data/quests/quests.json` with legacy fallback; retained functionality while enabling future case‑consistent asset layout.
+- Event JSON Stubs: Uppercase legacy event files in `data/scripts/Quests` replaced with empty arrays to eliminate duplicate data sources (will migrate real event data next phase).
+- Main Module Lint: Added docstrings to Arcade stub, renamed `_pygame_available` -> `PYGAME_AVAILABLE`, wrapped overlong lines, converted `SoundClass` to `sound_class`, and suppressed intentional late imports with targeted pylint disables.
+- Deprecated Uppercase Package: Added import guards raising guidance to switch to lowercase naming per Python style conventions.
+- Patch Notes Overhaul: Replaced prior networking‑focused notes with an accurate record of today's structural refactors.
 
-Why these changes
------------------
-- Avoid crashes in environments without multiplayer helpers or with misconfigured settings.
-- Improve debuggability by not silently swallowing programmer errors.
-- Make the code easier to maintain and satisfy linters/CI checks.
+### Rationale
+- Consistent snake_case directories prevent case‑sensitive import issues on Unix-like systems.
+- Deprecation stubs provide immediate developer feedback if stale imports linger.
+- Early lint conformance (line length, naming, docstrings) reduces CI noise and clarifies intent.
+- Data path normalization prepares for unified asset loading pipeline.
 
-How to verify locally
----------------------
-1. Headless smoke test (quick):
+### Affected Files (Representative)
+- `main.py` (lint/docstrings/renames)
+- `data/scripts/quests/quest_manager.py` (path normalization retained)
+- `data/scripts/Quests/*` (stubs + empty JSON arrays)
+- `tools/start_story_quest.py`, `tools/start_alignment_quest.py` (import path updates)
+- `PATCH_NOTES.md` (current entry)
 
+### Follow-Up (Needed to Reach Playable State)
+- Reintroduce networking broadcast logic using a dedicated interface module with typed protocol.
+- Migrate event JSON to new lowercase data directory and rewire `story_system.py` paths.
+- Complete lint pass for: `game/windows.py`, `battle.py`, `creator.py`, `clan_system.py`, `abilities.py`, `world.py`, `pathfinding.py`, and tool scripts.
+- Add tests for quest selection alignment + arc fallback behavior.
+- Restore music and SFX asset loading consistency after directory normalization.
+
+### Verification Suggestions
 ```powershell
+# Headless sanity (should start stub loop; still limited gameplay)
 python main.py --no-window
-```
 
-2. Run unit tests (if you have dependencies installed in your venv):
-
-```powershell
+# Run existing tests (will highlight remaining structural gaps)
 python -m pytest -q
 ```
 
-3. Manual multiplayer test (local loopback):
-   - Edit `Settings/game_settings.json` and set:
-     - `"multiplayer": true`
-     - `"multiplayer_role": "host"` on one instance and `"client"` on another
-     - `"multiplayer_port": 50000` (or matching ports)
-   - Run two instances and verify no exceptions are raised when moving players. Check that `other_players` entries are populated.
+### Commit Message Template
+```
+chore: quest package rename, path normalization, main.py lint, event stubs (still unplayable)
 
-Suggested commit & release commands
-----------------------------------
-```powershell
-git add main.py CHANGELOG.md PATCH_NOTES.md
-git commit -m "Fix: improve networking robustness and error handling in main.py"
-git tag -a v0.1.1 -m "Networking & Error-Handling fixes"
-git push origin main --follow-tags
+Includes:
+- Lowercase quest package & deprecation stubs
+- Normalized QUESTS_JSON path with fallback
+- Main arcade stub docstrings and pygame constant rename
+- Empty legacy event JSON stubs
+- Updated patch notes (status: unplayable)
 ```
 
-Next recommended steps
-----------------------
-- Inspect `tools/multiplayer.py` to align the server/client API with the callers used in `main.py` and add explicit tests for message formats and network error handling.
-- Run the test-suite and fix any uncovered issues.
-- Optionally create a small integration test that spins up a server and client on loopback for CI.
-
-If you want, I can run the headless smoke test or the full test-suite now and commit & tag the changes for you.
+---
+Earlier entries have been superseded by this consolidated snapshot for 2025-11-26.

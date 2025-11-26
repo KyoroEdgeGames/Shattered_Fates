@@ -4,26 +4,122 @@
         "name": "First Hunt",
         "description": "Learn to hunt with your clan warriors.",
         "required_age": "kit",
+        "alignment": "good",
         "rewards": {
             "xp": 10,
             "skill_unlock": "claw_attack"
         },
-        "npc_involved": [
-            "Blazetalon",
-            "Olivesky"
-        ]
+        "npc_involved": ["Blazetalon", "Olivesky"]
     },
     {
         "id": "bloodclan_ivy_training",
         "name": "Necrotic Strike Practice",
         "description": "Train with Ivy to master the necrotic strike.",
         "required_age": "apprentice",
+        "alignment": "evil",
         "rewards": {
             "xp": 15,
             "skill_unlock": "necrotic_strike"
         },
-        "npc_involved": [
-            "Ivy"
-        ]
+        "npc_involved": ["Ivy"]
+    },
+    {
+        "id": "neutral_clan_scouting",
+        "name": "Border Scouting",
+        "description": "Patrol the border and report any signs of tension.",
+        "required_age": "apprentice",
+        "alignment": "neutral",
+        "rewards": {
+            "xp": 8
+        },
+        "npc_involved": ["Shadowfur"]
+    },
+    {
+        "id": "ivy_awaken_eyes",
+        "name": "Mismatched Eyes Awakening",
+        "description": "Discover the significance of Ivy's two-colored eyes and latent power.",
+        "required_age": "kit",
+        "alignment": "neutral",
+        "story_arc": "ivy",
+        "story_stage": 1,
+        "rewards": {"xp": 12},
+        "npc_involved": ["Coal", "Silence"]
+    },
+    {
+        "id": "ivy_dream_scourge",
+        "name": "Dream of Scourgestar",
+        "description": "Ivy trains in a dream realm under Scourgestar's gaze.",
+        "required_age": "kit",
+        "alignment": "evil",
+        "story_arc": "ivy",
+        "story_stage": 2,
+        "rewards": {"xp": 18, "skill_unlock": "necrotic_slash"},
+        "npc_involved": ["Scourgestar"]
+    },
+    {
+        "id": "ivy_fox_encounter",
+        "name": "Fox Encounter",
+        "description": "Survive the rabid fox attack and witness Stolenstar's regeneration.",
+        "required_age": "kit",
+        "alignment": "neutral",
+        "story_arc": "ivy",
+        "story_stage": 3,
+        "rewards": {"xp": 25, "alignment_shift": "evil"},
+        "npc_involved": ["Stolenstar", "Coal"]
+    },
+    {
+        "id": "ivy_bloodclan_initiation",
+        "name": "Bloodclan Initiation",
+        "description": "Enter Bloodclan camp and begin formal warrior training.",
+        "required_age": "apprentice",
+        "alignment": "evil",
+        "story_arc": "ivy",
+        "story_stage": 4,
+        "rewards": {"xp": 30, "skill_unlock": "ferocious_roar"},
+        "npc_involved": ["Stolenstar"]
+    },
+    {
+        "id": "coal_loyalty_conflict",
+        "name": "Coal's Loyalty",
+        "description": "Coal questions Ivy's growing darkness; choose to reassure or dominate.",
+        "required_age": "kit",
+        "alignment": "neutral",
+        "story_arc": "coal",
+        "story_stage": 1,
+        "rewards": {"xp": 10, "alignment_choice": ["good", "evil"]},
+        "npc_involved": ["Coal", "Ivy"]
+    },
+    {
+        "id": "custom_choose_path",
+        "name": "Choose Your Path",
+        "description": "A mentor offers divergent philosophies: Bright Waves guidance or Bloodclan power.",
+        "required_age": "kit",
+        "alignment": "neutral",
+        "story_arc": "custom_branch",
+        "story_stage": 1,
+        "rewards": {"xp": 14, "alignment_choice": ["good", "evil"]},
+        "npc_involved": ["Mentor"]
+    },
+    {
+        "id": "custom_good_trial",
+        "name": "Trial of Mercy",
+        "description": "Spare a defeated rogue to earn Bright Waves favor.",
+        "required_age": "apprentice",
+        "alignment": "good",
+        "story_arc": "custom_good",
+        "story_stage": 2,
+        "rewards": {"xp": 20, "reputation_gain": {"Lostclan": 5}},
+        "npc_involved": ["Rogue"]
+    },
+    {
+        "id": "custom_evil_trial",
+        "name": "Trial of Dominance",
+        "description": "Intimidate and erode a rival with emerging dark power.",
+        "required_age": "apprentice",
+        "alignment": "evil",
+        "story_arc": "custom_evil",
+        "story_stage": 2,
+        "rewards": {"xp": 20, "reputation_gain": {"Bloodclan": 5}},
+        "npc_involved": ["Rogue"]
     }
 ]

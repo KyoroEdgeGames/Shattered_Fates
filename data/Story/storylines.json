@@ -1,0 +1,41 @@
+{
+  "main_cast": {
+    "ivy": {
+      "arc_id": "ivy",
+      "stages": [
+        {"stage": 1, "quest_id": "ivy_awaken_eyes", "title": "Awakening", "summary": "Ivy's heterochromia hints at necrotic potential."},
+        {"stage": 2, "quest_id": "ivy_dream_scourge", "title": "Dream Training", "summary": "Scourgestar's dream forge begins shaping Ivy."},
+        {"stage": 3, "quest_id": "ivy_fox_encounter", "title": "Fox Terror", "summary": "Rabid fox battle reveals Stolenstar's regeneration."},
+        {"stage": 4, "quest_id": "ivy_bloodclan_initiation", "title": "Initiation", "summary": "Formal entry into Bloodclan warrior path."}
+      ]
+    },
+    "coal": {
+      "arc_id": "coal",
+      "stages": [
+        {"stage": 1, "quest_id": "coal_loyalty_conflict", "title": "Loyalty Conflict", "summary": "Coal struggles with Ivy's dark shift."}
+      ]
+    }
+  },
+  "custom": {
+    "branch": {
+      "arc_id": "custom_branch",
+      "stages": [
+        {"stage": 1, "quest_id": "custom_choose_path", "title": "Path Choice", "summary": "Decide between Bright Waves mercy or Bloodclan power."}
+      ],
+      "branches": {
+        "good": {
+          "arc_id": "custom_good",
+          "stages": [
+            {"stage": 2, "quest_id": "custom_good_trial", "title": "Trial of Mercy", "summary": "Show compassion to earn Bright Waves favor."}
+          ]
+        },
+        "evil": {
+          "arc_id": "custom_evil",
+          "stages": [
+            {"stage": 2, "quest_id": "custom_evil_trial", "title": "Trial of Dominance", "summary": "Assert dominance and erode a rival."}
+          ]
+        }
+      }
+    }
+  }
+}
