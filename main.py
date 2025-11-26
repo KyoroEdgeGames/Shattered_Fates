@@ -11,7 +11,20 @@ from __future__ import annotations
 import json
 import logging
 import os
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union, Callable, cast
+
+# Prefer importing these at module level so linters don't flag imports inside
+# functions; fall back to None when unavailable.
+try:
+    import uuid as _uuid
+except ImportError:
+    _uuid = None
+
+try:
+    from tools.multiplayer import UDPLobbyServer, UDPClient  # type: ignore
+except (ImportError, ModuleNotFoundError):
+    UDPLobbyServer = None  # type: ignore
+    UDPClient = None  # type: ignore
 
 if TYPE_CHECKING:
     import arcade  # pragma: no cover  # type: ignore[import]
@@ -97,7 +110,11 @@ try:
     # animation module may depend on arcade being importable; import when available
     from animation import load_animations  # type: ignore
 except (ImportError, ModuleNotFoundError):
-    load_animations = lambda *a, **k: {}
+    def load_animations(*_a, **_k):
+        """Fallback loader that returns an empty mapping when animations are
+        unavailable.
+        """
+        return {}
 
 # Preload animations once for helper functions and DevMode use.
 ANIMATIONS: Dict[str, Any] = {}
@@ -844,21 +861,25 @@ class GameWindow(BaseWindow):  # type: ignore
                     # uuid should be available in stdlib; fall back to a simple id
                     self._net_id = f"player-{id(self)}"
 
-                # try to import multiplayer helpers
-                try:
-                    from tools.multiplayer import UDPLobbyServer, UDPClient  # type: ignore
-
-                    role = settings.get("multiplayer_role", "host")
-                    host = settings.get("multiplayer_host", "127.0.0.1")
-                    port = int(settings.get("multiplayer_port", 50000))
-                    if role == "host":
-                        # start server and also a client to receive forwarded messages
+                # Attempt to start multiplayer helpers if the imported symbols
+                # are available at module import time (they were imported at
+                # module scope where possible).
+                role = settings.get("multiplayer_role", "host")
+                host = settings.get("multiplayer_host", "127.0.0.1")
+                port = int(settings.get("multiplayer_port", 50000))
+                if role == "host":
+                    # start server and also a client to receive forwarded messages
+                    if UDPLobbyServer is not None:
                         try:
                             self.network_server = UDPLobbyServer(host="0.0.0.0", port=port)
                             self.network_server.start()
                         except (OSError, RuntimeError) as exc:
                             logging.debug("Failed to start UDPLobbyServer: %s", exc)
                             self.network_server = None
+                    else:
+                        self.network_server = None
+
+                    if UDPClient is not None:
                         try:
                             self.network_client = UDPClient(host, port, on_message=self._on_network_msg)
                             self.network_client.start()
@@ -866,17 +887,17 @@ class GameWindow(BaseWindow):  # type: ignore
                             logging.debug("Failed to start UDPClient (host client): %s", exc)
                             self.network_client = None
                     else:
+                        self.network_client = None
+                else:
+                    if UDPClient is not None:
                         try:
                             self.network_client = UDPClient(host, port, on_message=self._on_network_msg)
                             self.network_client.start()
                         except (OSError, RuntimeError, ValueError) as exc:
                             logging.debug("Failed to start UDPClient (client role): %s", exc)
                             self.network_client = None
-                except (ImportError, ModuleNotFoundError) as exc:
-                    # multiplayer module not available; ignore and leave network None
-                    logging.debug("multiplayer helpers not available: %s", exc)
-                    self.network_server = None
-                    self.network_client = None
+                    else:
+                        self.network_client = None
         except (OSError, ValueError, TypeError) as exc:
             # settings failure should not break window; log for debugging
             logging.debug("Failed to read settings for GameWindow: %s", exc)
@@ -977,8 +998,6 @@ class GameWindow(BaseWindow):  # type: ignore
         if client is not None and net_id:
             msg = f"POS|{net_id}|{int(self.player_x)}|{int(self.player_y)}"
             # Tell static analyzers this is expected to be a callable send function
-            from typing import Callable, cast
-
             send_fn = cast(Optional[Callable[[str], Any]], getattr(client, "send", None))
             if send_fn is not None:
                 try:
@@ -1209,7 +1228,57 @@ def main() -> None:
     no_window = "--no-window" in sys.argv or "--headless" in sys.argv
 
     if no_window:
-        print("Headless mode: skipping window creation (--no-window passed).")
+        print("Headless mode: running simple terminal player (no window).")
+        # Provide a minimal interactive headless mode so the game is playable
+        # without arcade/OpenGL. Controls: W/A/S/D to move, P to print state,
+        # Q to quit. This is intentionally small and useful for CI or testing.
+        try:
+            win = GameWindow()
+        except (RuntimeError, ImportError, OSError) as exc:
+            logging.debug("GameWindow construction failed, falling back to mini window: %s", exc)
+            # If GameWindow construction fails, create a minimal object with needed fields
+            class _MiniWin:
+                def __init__(self):
+                    self.player_x = 100.0
+                    self.player_y = 100.0
+                    self.player_w = 40.0
+                    self.player_h = 40.0
+                    self.player_speed = 4.0
+                    self.other_players = {}
+
+                def on_update(self, dt: float) -> None:  # pragma: no cover - best-effort fallback
+                    _ = dt
+                    return None
+
+            win = _MiniWin()
+
+        print("Controls: W/A/S/D = move, P = print position, L = list peers, Q = quit")
+        try:
+            while True:
+                cmd = input("> ").strip().lower()
+                if not cmd:
+                    continue
+                if cmd in ("q", "quit", "exit"):
+                    print("Exiting headless mode.")
+                    break
+                if cmd in ("w", "up"):
+                    win.player_y += getattr(win, "player_speed", 4.0)
+                elif cmd in ("s", "down"):
+                    win.player_y -= getattr(win, "player_speed", 4.0)
+                elif cmd in ("a", "left"):
+                    win.player_x -= getattr(win, "player_speed", 4.0)
+                elif cmd in ("d", "right"):
+                    win.player_x += getattr(win, "player_speed", 4.0)
+                elif cmd in ("p", "pos"):
+                    print(f"Player position: x={int(getattr(win, 'player_x', 0))} y={int(getattr(win, 'player_y', 0))}")
+                elif cmd in ("l", "list"):
+                    print("Other players:", getattr(win, "other_players", {}))
+                else:
+                    print("Unknown command. Use W/A/S/D, P, L, Q.")
+                # call update hook if available (simulate a frame)
+                win.on_update(1.0 / FPS)
+        except (KeyboardInterrupt, EOFError):
+            print("\nExiting headless mode.")
         return
 
     try:
