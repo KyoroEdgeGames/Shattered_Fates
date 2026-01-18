@@ -1,48 +1,66 @@
-"""
-Small helper to export asset metadata for Unreal Engine import.
-Writes a JSON manifest with source file paths and suggested import names.
-"""
-from __future__ import annotations
+// C++ replacement for unreal_port.py
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
-import json
-import os
-from typing import Dict, List
+namespace fs = std::filesystem;
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ASSETS = os.path.join(BASE_DIR, "assets")
-SPRITES = os.path.join(BASE_DIR, "sprites")
-MUSIC = os.path.join(ASSETS, "Audio", "music")
-SFX = os.path.join(ASSETS, "Audio", "SFX")
-OUT = os.path.join(BASE_DIR, "export_unreal")
+static std::vector<std::string> find_files(const fs::path& folder, const std::vector<std::string>& exts) {
+	std::vector<std::string> out;
+	if (!fs::exists(folder) || !fs::is_directory(folder)) return out;
+	for (auto const& entry : fs::recursive_directory_iterator(folder)) {
+		if (!entry.is_regular_file()) continue;
+		std::string name = entry.path().filename().string();
+		std::string lower = name;
+		for (auto& c : lower) c = (char)std::tolower(c);
+		for (auto const& e : exts) {
+			if (lower.size() >= e.size() && lower.rfind(e) == lower.size() - e.size()) {
+				out.emplace_back(entry.path().string());
+				break;
+			}
+		}
+	}
+	return out;
+}
 
+static void write_manifest(const fs::path& out_path,
+                           const std::vector<std::string>& sprites,
+                           const std::vector<std::string>& music,
+                           const std::vector<std::string>& sfx) {
+	fs::create_directories(out_path.parent_path());
+	std::ofstream fh(out_path);
+	fh << "{\n";
+	auto write_array = [&](const char* key, const std::vector<std::string>& arr, bool last) {
+		fh << "  \"" << key << "\": [\n";
+		for (size_t i = 0; i < arr.size(); ++i) {
+			fh << "    " << "\"" << arr[i] << "\"";
+			if (i + 1 < arr.size()) fh << ",";
+			fh << "\n";
+		}
+		fh << "  ]" << (last ? "\n" : ",\n");
+	};
+	write_array("sprites", sprites, false);
+	write_array("music", music, false);
+	write_array("sfx", sfx, true);
+	fh << "}\n";
+}
 
-def find_files(folder: str, exts: List[str]) -> List[str]:
-    out: List[str] = []
-    if not os.path.isdir(folder):
-        return out
-    for root, _dirs, files in os.walk(folder):
-        for f in files:
-            if any(f.lower().endswith(e) for e in exts):
-                out.append(os.path.join(root, f))
-    return out
+int main() {
+	const fs::path base = fs::current_path();
+	const fs::path assets = base / "assets";
+	const fs::path sprites = base / "sprites";
+	const fs::path music = assets / "Audio" / "music";
+	const fs::path sfx = assets / "Audio" / "SFX";
+	const fs::path out_dir = base / "export_unreal";
+	const fs::path manifest = out_dir / "unreal_manifest.json";
 
+	auto sprites_list = find_files(sprites, {".png", ".jpg", ".jpeg"});
+	auto music_list = find_files(music, {".mp3", ".ogg", ".wav", ".flac"});
+	auto sfx_list = find_files(sfx, {".mp3", ".ogg", ".wav"});
 
-def build_manifest() -> Dict[str, List[str]]:
-    os.makedirs(OUT, exist_ok=True)
-    sprites = find_files(SPRITES, [".png", ".jpg", ".jpeg"])
-    music = find_files(MUSIC, [".mp3", ".ogg", ".wav", ".flac"])
-    sfx = find_files(SFX, [".mp3", ".ogg", ".wav"]) 
-    return {"sprites": sprites, "music": music, "sfx": sfx}
-
-
-def write_manifest(manifest: Dict[str, List[str]]) -> str:
-    path = os.path.join(OUT, "unreal_manifest.json")
-    with open(path, "w", encoding="utf-8") as fh:
-        json.dump(manifest, fh, indent=2)
-    return path
-
-
-if __name__ == "__main__":
-    m = build_manifest()
-    p = write_manifest(m)
-    print("Wrote Unreal manifest to:", p)
+	write_manifest(manifest, sprites_list, music_list, sfx_list);
+	std::cout << "Wrote Unreal manifest to: " << manifest.string() << "\n";
+	return 0;
+}

@@ -133,6 +133,14 @@ class Camp:
         self.add_cat_to_den(kit_data["name"], kit_data["role"])
         print(f"Kit {kit_data['name']} added to {self.clan_name} nursery.")
 
+        # New code block start
+        const fs::path char_dir = fs::current_path() / "data" / "Characters";
+        const fs::path kit_path = char_dir / (kit_data.value("name", "") + ".json");
+        write_json(kit_path, kit_data);
+        nursery.push_back(kit_data.value("name", ""));
+        std::cout << "Kit " << kit_data.value("name","") << " added to " << clan_name << " nursery.\n";
+        # New code block end
+
     def list_nursery(self) -> List[str]:
         """Return list of kit names currently tracked in the nursery."""
         return list(self.nursery)

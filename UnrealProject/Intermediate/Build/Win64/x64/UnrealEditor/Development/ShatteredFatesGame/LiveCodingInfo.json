@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ShatteredFatesGame.gen.cpp.obj": [
+			"QuestSubsystem.gen.cpp.obj",
+			"RelationshipsSubsystem.gen.cpp.obj",
+			"ShatteredFatesGame.init.gen.cpp.obj",
+			"ShatteredFatesGameInstance.gen.cpp.obj",
+			"SkillsSubsystem.gen.cpp.obj",
+			"StorySubsystem.gen.cpp.obj"
+		]
+	}
+}

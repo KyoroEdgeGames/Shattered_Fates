@@ -1,0 +1,16 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ShatteredFatesProject.gen.cpp.obj": [
+			"CharacterData.gen.cpp.obj",
+			"CharacterSubsystem.gen.cpp.obj",
+			"ClanData.gen.cpp.obj",
+			"DataTableRows.gen.cpp.obj",
+			"HerbData.gen.cpp.obj",
+			"ItemData.gen.cpp.obj",
+			"QuestData.gen.cpp.obj",
+			"ShatteredFatesBlueprintLibrary.gen.cpp.obj",
+			"ShatteredFatesProject.init.gen.cpp.obj"
+		]
+	}
+}

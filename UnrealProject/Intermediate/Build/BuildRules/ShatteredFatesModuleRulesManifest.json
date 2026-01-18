@@ -1,0 +1,11 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Source\\ShatteredFatesGame\\ShatteredFatesGame.Build.cs",
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Source\\ShatteredFatesProject\\ShatteredFatesProject.Build.cs",
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Source\\ShatteredFates\\ShatteredFates.Build.cs",
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Plugins\\ShatteredFates\\Source\\ShatteredFates\\ShatteredFates.Build.cs",
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Source\\ShatteredFates.Target.cs",
+		"C:\\Users\\liama\\OneDrive\\Documents\\Shattered_Fates\\UnrealProject\\Source\\ShatteredFatesEditor.Target.cs"
+	],
+	"EngineVersion": "5.7.1"
+}

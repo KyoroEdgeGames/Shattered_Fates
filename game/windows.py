@@ -10,11 +10,6 @@ import logging
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
-try:  # arcade provided by main's stub or real package
-    import arcade  # type: ignore
-except ImportError:  # pragma: no cover
-    arcade = None  # type: ignore
-
 # Local constants (decoupled from main to avoid circular import)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -55,41 +50,6 @@ def load_npc_physical(name: str, index: int = 0) -> Dict[str, Any]:
         "height": 40.0,
     }
 
-
-def _arcade_draw_lrbt_rectangle_filled(left: float, right: float, bottom: float, top: float, color: Any) -> None:
-    fn = getattr(arcade, "draw_lrbt_rectangle_filled", None)
-    if callable(fn):
-        try:
-            fn(left, right, bottom, top, color)
-        except (OSError, RuntimeError, AttributeError, TypeError, ValueError):
-            pass
-
-
-def _arcade_draw_rectangle_filled(x: float, y: float, width: float, height: float, color: Any) -> None:
-    fn = getattr(arcade, "draw_rectangle_filled", None)
-    if callable(fn):
-        try:
-            fn(x, y, width, height, color)
-        except (OSError, RuntimeError, AttributeError, TypeError, ValueError):
-            pass
-
-
-def _arcade_draw_text(text: str, x: float, y: float, color: Any, size: int) -> None:
-    fn = getattr(arcade, "draw_text", None)
-    if callable(fn):
-        try:
-            fn(text, x, y, color, size)
-        except (OSError, RuntimeError, AttributeError, TypeError, ValueError):
-            pass
-
-
-def _arcade_set_background_color(color: Any) -> None:
-    fn = getattr(arcade, "set_background_color", None)
-    if callable(fn):
-        try:
-            fn(color)
-        except (OSError, RuntimeError, AttributeError, TypeError, ValueError):
-            pass
 
 try:
     from animation import load_animations  # type: ignore
@@ -273,63 +233,13 @@ class DevMode:
     def draw(self) -> None:
         if not self.active:
             return
-        _arcade_draw_lrbt_rectangle_filled(
-            self.panel_left,
-            self.panel_left + self.panel_width,
-            self.panel_bottom,
-            self.panel_bottom + self.panel_height,
-            (50, 50, 50, 200),
-        )
-        _arcade_draw_text(
-            "Developer Mode (F1 to toggle)",
-            self.panel_left + 10,
-            self.panel_bottom + self.panel_height - 24,
-            arcade.color.WHITE,
-            self.font_size,
-        )
-        for name, (cx, cy, w, h) in self.buttons.items():
-            _arcade_draw_rectangle_filled(cx, cy, w, h, arcade.color.DARK_GRAY)
-            _arcade_draw_text(name, cx - w / 2 + 8, cy - self.font_size / 2, arcade.color.WHITE, self.font_size)
-        if self.input_mode:
-            label = "Item:" if self.input_mode == "item" else "XP:"
-            _arcade_draw_text(label, self.panel_left + 10, self.panel_bottom + 40, arcade.color.WHITE, self.font_size)
-            _arcade_draw_rectangle_filled(
-                self.panel_left + 10 + 75,
-                self.panel_bottom + 10 + 15,
-                150,
-                30,
-                arcade.color.GRAY,
-            )
-            _arcade_draw_text(
-                self.input_text,
-                self.panel_left + 16,
-                self.panel_bottom + 16,
-                arcade.color.WHITE,
-                self.font_size,
-            )
-        lines: List[str] = []
-        if self.player.name:
-            lines.append(f"Cat: {self.player.name} ({self.player.clan})")
-        if self.player.role or self.player.alignment:
-            lines.append(f"Role: {self.player.role} | Align: {self.player.alignment}")
-        if self.player.traits:
-            lines.append("Traits: " + ", ".join(self.player.traits[:4]))
-        if self.player.injuries:
-            lines.append("Injuries: " + ", ".join(self.player.injuries[:3]))
-        if self.player.mentor:
-            lines.append(f"Mentor: {self.player.mentor}")
-        lines.append(f"XP: {self.player.exp} | Items: {len(self.player.inventory)}")
-        base_y = self.panel_bottom + 5
-        for i, line in enumerate(lines):
-            _arcade_draw_text(line, self.panel_left + 10, base_y + i * (self.font_size + 2), arcade.color.LIGHT_GRAY, self.font_size)
+        print(f"[DevMode] Cat={self.player.name} Clan={self.player.clan} Role={self.player.role} XP={self.player.exp} Items={len(self.player.inventory)}")
 
 
-class GameWindow(arcade.Window):  # type: ignore
+class GameWindow:
     """Primary game window: world rendering, player movement, NPC wandering."""
 
     def __init__(self) -> None:
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Shattered Fates")
-        _arcade_set_background_color(arcade.color.DARK_SLATE_GRAY)
         self.player_x = 100.0
         self.player_y = 100.0
         self.player_w = 40.0
@@ -517,26 +427,7 @@ class GameWindow(arcade.Window):  # type: ignore
         return not (right1 <= left2 or right2 <= left1 or top1 <= bottom2 or top2 <= bottom1)
 
     def on_draw(self) -> None:  # type: ignore[override]
-        self.clear()
-        world = getattr(self, "world", None)
-        if world is not None:
-            try: world.draw()
-            except (AttributeError, TypeError): pass
-        if self.other_players:
-            for pid, pdata in self.other_players.items():
-                ox = pdata.get("x", 0.0); oy = pdata.get("y", 0.0)
-                w = self.player_w * 0.6; h = self.player_h * 0.6
-                hue = abs(hash(pid)) % 255
-                col = (hue, 255 - hue // 2, 120)
-                _arcade_draw_lrbt_rectangle_filled(ox, ox + w, oy, oy + h, col)
-                _arcade_draw_text(pid[:6], ox, oy + h + 4, arcade.color.LIGHT_GRAY, 10)
-        for npc in self.npcs:
-            _arcade_draw_lrbt_rectangle_filled(
-                npc['x'], npc['x'] + npc['width'], npc['y'], npc['y'] + npc['height'], arcade.color.RED_ORANGE
-            )
-        _arcade_draw_lrbt_rectangle_filled(
-            self.player_x, self.player_x + self.player_w, self.player_y, self.player_y + self.player_h, arcade.color.AERO_BLUE
-        )
+        print(f"Draw: Player at ({self.player_x},{self.player_y})")
         self.dev_ui.draw()
 
     def on_joybutton_press(self, _joystick: Any, button: int) -> None:  # type: ignore
@@ -548,12 +439,10 @@ class GameWindow(arcade.Window):  # type: ignore
         self.player_y += hat_y * self.player_speed
 
 
-class MainMenuWindow(arcade.Window):  # type: ignore
+class MainMenuWindow:
     """Simple menu to start game, open settings, toggle dev UI, or quit."""
 
     def __init__(self) -> None:
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Shattered Fates - Menu")
-        _arcade_set_background_color(arcade.color.DARK_SLATE_GRAY)
         self.buttons = {
             "Start Game": (SCREEN_WIDTH / 2, 320, 240, 48),
             "Settings": (SCREEN_WIDTH / 2, 260, 240, 40),
@@ -564,16 +453,16 @@ class MainMenuWindow(arcade.Window):  # type: ignore
         self.dev_ui = DevMode(self.dev_player, self, font_size=14)
 
     def on_draw(self) -> None:  # type: ignore[override]
-        self.clear()
-        _arcade_draw_text("Shattered Fates", SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT - 140, arcade.color.WHITE, 36)
         for name, (cx, cy, w, h) in self.buttons.items():
-            _arcade_draw_rectangle_filled(cx, cy, w, h, arcade.color.DARK_GRAY)
-            _arcade_draw_text(name, cx - w / 2 + 12, cy - 10, arcade.color.WHITE, 18)
+            print(f"Button: {name} at ({cx},{cy}) Size({w},{h})")
         self.dev_ui.draw()
 
     def on_mouse_press(self, x: float, y: float, _button: int, _modifiers: int) -> None:  # type: ignore[override]
         for name, rect in self.buttons.items():
-            if self.dev_ui.point_in_button(x, y, rect):
+            cx, cy, w, h = rect
+            left = cx - w / 2; right = cx + w / 2; bottom = cy - h / 2; top = cy + h / 2
+            inside = left <= x <= right and bottom <= y <= top
+            if inside:
                 if name == "Start Game":
                     _ = GameWindow()
                 elif name == "Settings":
@@ -597,12 +486,10 @@ class MainMenuWindow(arcade.Window):  # type: ignore
         self.dev_ui.on_key_press(symbol, modifiers)
 
 
-class SettingsWindow(arcade.Window):  # type: ignore
+class SettingsWindow:  # type: ignore
     """Basic settings menu for resolution, volume, multiplayer options."""
 
     def __init__(self) -> None:
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Settings")
-        _arcade_set_background_color(arcade.color.DARK_SLATE_GRAY)
         self.settings = read_settings()
         self.buttons = {
             "Resolution": (SCREEN_WIDTH / 2, 380, 300, 40),
@@ -617,18 +504,15 @@ class SettingsWindow(arcade.Window):  # type: ignore
         }
 
     def on_draw(self) -> None:  # type: ignore[override]
-        self.clear()
-        _arcade_draw_text("Settings", SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT - 120, arcade.color.WHITE, 32)
         for name, (cx, cy, w, h) in self.buttons.items():
-            _arcade_draw_rectangle_filled(cx, cy, w, h, arcade.color.DARK_GRAY)
-            _arcade_draw_text(name, cx - w / 2 + 12, cy - 10, arcade.color.WHITE, 14)
+            print(f"Button: {name} at ({cx},{cy}) Size({w},{h})")
         res = self.settings.get("resolution", [SCREEN_WIDTH, SCREEN_HEIGHT])
-        _arcade_draw_text(f"Resolution: {res[0]}x{res[1]}", SCREEN_WIDTH / 2 - 140, 400, arcade.color.LIGHT_GRAY, 12)
-        _arcade_draw_text(f"Volume: {self.settings.get('volume', 70)}", SCREEN_WIDTH / 2 - 140, 340, arcade.color.LIGHT_GRAY, 12)
-        _arcade_draw_text(f"Multiplayer: {self.settings.get('multiplayer')}", SCREEN_WIDTH / 2 - 140, 280, arcade.color.LIGHT_GRAY, 12)
-        _arcade_draw_text(f"Role: {self.settings.get('multiplayer_role')}", SCREEN_WIDTH / 2 - 140, 240, arcade.color.LIGHT_GRAY, 12)
-        _arcade_draw_text(f"Host: {self.settings.get('multiplayer_host')}", SCREEN_WIDTH / 2 - 140, 200, arcade.color.LIGHT_GRAY, 12)
-        _arcade_draw_text(f"Port: {self.settings.get('multiplayer_port')}", SCREEN_WIDTH / 2 - 140, 160, arcade.color.LIGHT_GRAY, 12)
+        print(f"Resolution: {res[0]}x{res[1]}")
+        print(f"Volume: {self.settings.get('volume', 70)}")
+        print(f"Multiplayer: {self.settings.get('multiplayer')}")
+        print(f"Role: {self.settings.get('multiplayer_role')}")
+        print(f"Host: {self.settings.get('multiplayer_host')}")
+        print(f"Port: {self.settings.get('multiplayer_port')}")
 
     def on_mouse_press(self, x: float, y: float, _button: int, _modifiers: int) -> None:  # type: ignore[override]
         for name, rect in self.buttons.items():

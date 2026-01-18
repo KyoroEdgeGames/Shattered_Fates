@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "ShatteredFates",
+			"Path": "..\\Source\\ShatteredFates.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ShatteredFatesEditor",
+			"Path": "..\\Source\\ShatteredFatesEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

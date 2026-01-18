@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-ShatteredFatesGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/ShatteredFatesEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/Module.ShatteredFatesGame.gen.cpp.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/QuestSubsystem.cpp.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/ShatteredFatesGame.cpp.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/ShatteredFatesGameInstance.cpp.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/PerModuleInline.gen.cpp.obj"
+"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/Default.rc2.res"
+/OUT:"C:/Users/liama/OneDrive/Documents/Shattered_Fates/UnrealProject/Intermediate/Build/Win64/x64/UnrealEditor/Development/ShatteredFatesGame/UnrealEditor-ShatteredFatesGame.lib"

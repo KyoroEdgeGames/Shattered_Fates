@@ -1,0 +1,7 @@
+name,playable,clan,age_stage,story_arc,alignment_tendency,skills,traits_flat
+CustomCat,True,Lostclan,kit,custom_branch,neutral,,agility:5;stealth:3;strength:4
+Ivy,True,Bloodclan,kit,ivy,evil,necrotic_slash;claw_attack,agility:6;dominance:6;necrotic_power:5;strength:7
+Coal,False,Bloodclan,kit,coal,neutral,stone_claws,agility:5;loyalty:7;strength:6
+Silence,False,Kittypet,queen,ivy,good,protect_kit;herbal_salve,agility:4;nurture:8;stealth:5
+Stolenstar,False,Bloodclan,leader,ivy,evil,leadership_rally;regenerate,agility:7;regeneration:9;strength:8
+Scourgestar,False,Bloodclan,elder,ivy,evil,necrotic_slash;ferocious_roar,intimidation:9;necrotic_power:9;tactical:8

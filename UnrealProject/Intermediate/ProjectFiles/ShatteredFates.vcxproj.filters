@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\MIGRATION.md" />
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{BB38096A-B391-30DC-A0D4-4F3EA6B44507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\ShatteredFates">
+      <UniqueIdentifier>{DD27BE1F-2817-3FB5-AE0F-00F4E053BF20}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\ShatteredFates\ShatteredFates.uplugin">
+      <Filter>Plugins\ShatteredFates</Filter>
+    </None>
+    <Filter Include="Plugins\ShatteredFates\Source">
+      <UniqueIdentifier>{AD80B133-1099-3CDD-B544-F49BBAB2C894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\ShatteredFates\Source\ShatteredFates">
+      <UniqueIdentifier>{B57F3F4C-7E45-3F04-8BEB-FA9F56E8ABDD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\ShatteredFates\Source\ShatteredFates\Private">
+      <UniqueIdentifier>{AF5A3A30-8B39-3DC8-9479-963E9F5077D0}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Private\CharacterSubsystem.cpp">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Private\ShatteredFates.cpp">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Private\ShatteredFatesBlueprintLibrary.cpp">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <Filter Include="Plugins\ShatteredFates\Source\ShatteredFates\Public">
+      <UniqueIdentifier>{C59DC28F-0DF0-3F48-B89E-E5CC642EACA1}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\CharacterData.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\CharacterSubsystem.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\ClanData.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\DataTableRows.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\HerbData.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\ItemData.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\QuestData.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\ShatteredFates.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\Public\ShatteredFatesBlueprintLibrary.h">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <None Include="..\..\Plugins\ShatteredFates\Source\ShatteredFates\ShatteredFates.Build.cs">
+      <Filter>Plugins\ShatteredFates\Source\ShatteredFates</Filter>
+    </None>
+    <None Include="..\..\README.md" />
+    <None Include="..\..\ShatteredFates.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\ShatteredFates.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ShatteredFatesEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Source\ShatteredFatesGame">
+      <UniqueIdentifier>{0A891C75-6673-3EFA-9EE3-1457979790B3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ShatteredFatesGame\Private">
+      <UniqueIdentifier>{0323B430-64FE-38E6-BF9A-EA2184F66BE3}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\CharacterFactory.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\ClanSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\CombatSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\PathfindingLibrary.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\QuestSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\RelationshipsSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\ShatteredFatesGame.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\ShatteredFatesGameInstance.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\ShatteredFatesGameMode.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\ShatteredFatesHUD.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\SkillsSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesGame\Private\WorldSubsystem.cpp">
+      <Filter>Source\ShatteredFatesGame\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\ShatteredFatesGame\Public">
+      <UniqueIdentifier>{7351DD17-3B03-3D8C-BE54-5039D419CEA9}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\CharacterFactory.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\ClanSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\CombatSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\PathfindingLibrary.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\QuestSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\RelationshipsSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\ShatteredFatesGame.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\ShatteredFatesGameInstance.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\ShatteredFatesGameMode.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\ShatteredFatesHUD.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\SkillsSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\StorySubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesGame\Public\WorldSubsystem.h">
+      <Filter>Source\ShatteredFatesGame\Public</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\ShatteredFatesGame\ShatteredFatesGame.Build.cs">
+      <Filter>Source\ShatteredFatesGame</Filter>
+    </None>
+    <Filter Include="Source\ShatteredFatesProject">
+      <UniqueIdentifier>{C71CE960-94E7-3A34-89AC-1DC9F28EF40F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ShatteredFatesProject\Private">
+      <UniqueIdentifier>{F24777C8-2786-3026-9F69-F675D044C12D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ShatteredFatesProject\Private\CharacterSubsystem.cpp">
+      <Filter>Source\ShatteredFatesProject\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesProject\Private\ShatteredFates.cpp">
+      <Filter>Source\ShatteredFatesProject\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFatesProject\Private\ShatteredFatesBlueprintLibrary.cpp">
+      <Filter>Source\ShatteredFatesProject\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\ShatteredFatesProject\Public">
+      <UniqueIdentifier>{622A955C-1443-3CFA-9155-A30786A689C3}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\CharacterData.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\CharacterSubsystem.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\ClanData.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\DataTableRows.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\HerbData.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\ItemData.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\QuestData.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\ShatteredFates.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFatesProject\Public\ShatteredFatesBlueprintLibrary.h">
+      <Filter>Source\ShatteredFatesProject\Public</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\ShatteredFatesProject\ShatteredFatesProject.Build.cs">
+      <Filter>Source\ShatteredFatesProject</Filter>
+    </None>
+    <Filter Include="Source\ShatteredFates">
+      <UniqueIdentifier>{52EA48C4-CB53-32F1-AFA7-2DA21E8EE47F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ShatteredFates\Private">
+      <UniqueIdentifier>{661063DC-078F-31B0-906C-EBE16579A275}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\ShatteredFates\Private\CharacterSubsystem.cpp">
+      <Filter>Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFates\Private\ShatteredFates.cpp">
+      <Filter>Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShatteredFates\Private\ShatteredFatesBlueprintLibrary.cpp">
+      <Filter>Source\ShatteredFates\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\ShatteredFates\Public">
+      <UniqueIdentifier>{417A798C-758F-3DE1-8188-4859F243D162}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\CharacterData.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\CharacterSubsystem.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\ClanData.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\DataTableRows.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\HerbData.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\ItemData.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\QuestData.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\ShatteredFates.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ShatteredFates\Public\ShatteredFatesBlueprintLibrary.h">
+      <Filter>Source\ShatteredFates\Public</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\ShatteredFates\ShatteredFates.Build.cs">
+      <Filter>Source\ShatteredFates</Filter>
+    </None>
+  </ItemGroup>
+</Project>

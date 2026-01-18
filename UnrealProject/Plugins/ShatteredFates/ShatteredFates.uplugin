@@ -1,0 +1,17 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1",
+  "FriendlyName": "Shattered Fates Data",
+  "Description": "Runtime data structures and helpers for Shattered Fates in Unreal Engine",
+  "Category": "Gameplay",
+  "EnabledByDefault": true,
+  "Modules": [],
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Linux",
+    "Mac"
+  ]
+}

@@ -1,0 +1,5 @@
+name,level_required,effect
+claw_attack,1,basic damage
+necrotic_strike,3,poison damage
+stealth,2,avoid detection
+herbal_heal,2,heal wounds

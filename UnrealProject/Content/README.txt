@@ -1,0 +1,1 @@
+Place your UE assets here. Suggested subfolders:\n- Maps\n- DataTables\n- Materials\n- Meshes\n- Audio\n

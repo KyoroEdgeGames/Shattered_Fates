@@ -1,0 +1,8 @@
+id,name,description,rarity,effects_flat
+moonshade,Moonshade,A silvery leaf that enhances night vision and alertness.,rare,stealth:2;vision:3
+bloodroot,Bloodroot,A red-rooted herb used for healing wounds and boosting energy.,uncommon,heal:20;stamina:5
+nightbloom,Nightbloom,A glowing flower that only blooms under the moon. Great for potions.,rare,mana:10;stealth:1
+sageleaf,Sageleaf,Common herb used in calming brews and minor healing remedies.,common,heal:5
+wolfsbane,Wolfsbane,Extremely toxic if ingested; can be used for traps or poisons.,rare,poison:10
+sunpetal,Sunpetal,Golden herb known for energizing tired warriors during patrols.,uncommon,stamina:10
+whisperroot,Whisperroot,Enhances a cat's ability to listen and detect hidden enemies.,rare,hearing:2;stealth:1
