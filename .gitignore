@@ -1,9 +1,267 @@
-venv/
-.venv/
-.venv311/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.PACK
+# Unreal Engine Project .gitignore
+# This gitignore is specifically for Unreal Engine 5.7 projects
+
+# Visual Studio 2022
+.vs/
+*.suo
+*.user
+*.sln.docstates
+*.userprefs
+*.pidb
+*.booproj
+
+# Visual Studio Code
+.vscode/
+.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Unreal Engine Build Files
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Keep certain Saved folders if needed (uncomment if you want to track configs)
+# !Saved/Config/
+
+# Unreal Engine Plugins
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.ipa
+*.apk
+
+# Unreal Engine File types
+*.gch
+*.pch
+*.pdb
+*.opendb
+*.VC.db
+*.VC.opendb
+*.VC.db-shm
+*.VC.db-wal
+
+# Precompiled Assets
+SourceArt/**/*.png
+SourceArt/**/*.tga
+
+# Cache files
+*.sdf
+*.tmp
+*.log
+*.tlog
+*.ilk
+*.iobj
+*.ipdb
+*.idb
+*.pdb
+*.opendb
+*.cachefile
+*.VC.opendb
+*.VC.db-wal
+*.VC.db-shm
+
+# Backup & report files
+*_i.c
+*_p.c
+*_h.h
+*.bak
+*.orig
+*.rej
+*~
+*.swp
+*.swo
+*-e
+
+# OS Generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Unreal-specific
+*.uasset.tmp
+*.umap.tmp
+*.upk.tmp
+
+# Crash reports
+/crashes/
+*.crash
+*.dmp
+
+# Local configuration
+/Config/Windows/
+/Config/WindowsEditor/
+/Config/Mac/
+/Config/Linux/
+
+# Localization
+/Content/Localization/Game/
+/Content/Localization/Engine/
+
+# StarterContent (if you're not modifying it)
+# Content/StarterContent/
+
+# Marketplace Content (Don't commit marketplace assets)
+# Content/Megascans/
+# Content/ParagonCharacters/
+
+# Audio Imports (large files)
+# Content/Audio/**/*.wav
+# Content/Audio/**/*.mp3
+
+# Video files (very large)
+*.mp4
+*.mov
+*.avi
+*.wmv
+
+# Texture Sources (keep only the cooked versions)
+# Content/Textures/**/*.psd
+# Content/Textures/**/*.tif
+# Content/Textures/**/*.tiff
+
+# Documentation build files
+/Documentation/Build/
+
+# Autosaves
+*_autosave.*
+*_Auto1.umap
+*_Auto2.umap
+*_Auto3.umap
+*_Auto4.umap
+*_Auto5.umap
+
+# Packaging
+/Releases/
+/WindowsNoEditor/
+/LinuxNoEditor/
+/MacNoEditor/
+/Android/
+
+# Plugins (if they're marketplace plugins, don't track them)
+# Plugins/MarketplacePlugin/
+
+# Build tools
+.build/
+.gradle/
+
+# Android
+.cxx/
+*.apk
+*.ap_
+*.aab
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
+DerivedData/
+
+# Steam
+steam_appid.txt
+
+# Epic Games Launcher
+.egstore/
+
+# Perforce
+.p4ignore
+
+# Plastic SCM
+.plastic/
+
+# Wwise
+**/GeneratedSoundBanks/
+
+# Node modules (if using any web tools)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Java
+*.class
+
+# Shader intermediate files
+*.usf.tmp
+
+# Asset Registry
+AssetRegistry.bin
+
+# Derived Data Cache (large, auto-generated)
+/DerivedDataCache/
+
+# File System Cache
+/Saved/Autosaves/
+/Saved/Backup/
+/Saved/Collections/
+/Saved/Cooked/
+/Saved/Crashes/
+/Saved/Logs/
+/Saved/MaterialStats/
+/Saved/Screenshots/
+/Saved/ShaderDebugInfo/
+/Saved/StagedBuilds/
+/Saved/Stats/
+
+# Keep some Saved folders if needed
+!Saved/Config/
+!Saved/SaveGames/
+
+# Build receipts
+*.target
+*.modules
+
+# UE4 generated files
+*.generated.h
+*.generated.cpp
+*.gen.cpp
+
+# Ignore project files outside the main directory
+/*.code-workspace
+/*.VC.db
+/*.VC.db-shm
+/*.VC.db-wal
