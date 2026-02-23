@@ -158,7 +158,7 @@ desktop.ini
 # Texture Sources (keep only the cooked versions)
 # Content/Textures/**/*.psd
 # Content/Textures/**/*.tif
-# Content/Textures/**/*.tiff
+# Content/Textures'écoute/tiff
 
 # Documentation build files
 /Documentation/Build/
@@ -265,3 +265,7 @@ AssetRegistry.bin
 /*.VC.db
 /*.VC.db-shm
 /*.VC.db-wal
+
+# Duplicate project folders (old structure)
+UnrealPlugin/
+UnrealProject/

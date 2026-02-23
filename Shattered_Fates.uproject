@@ -1,30 +1,308 @@
 {
-  "FileVersion": 3,
-  "EngineAssociation": "5.7",
-  "Category": "",
-  "Description": "",
-  "Modules": [
-    {
-      "Name": "Shattered_Fates",
-      "Type": "Runtime",
-      "LoadingPhase": "Default"
-    }
-  ],
-  "Plugins": [
-    {
-      "Name": "ModelingToolsEditorMode",
-      "Enabled": true
-    },
-    {
-      "Name": "VisualStudioTools",
-      "Enabled": true,
-      "SupportedTargetPlatforms": [
-        "Win64"
-      ]
-    }
-  ],
-  "TargetPlatforms": [],
-  "AdditionalRootDirectories": [],
-  "AdditionalPluginDirectories": [],
-  "EpicSampleNameHash": ""
+	"FileVersion": 3,
+	"EngineAssociation": "5.7",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Shattered_Fates",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true
+		},
+		{
+			"Name": "VisualStudioTools",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "LiveLinkControlRig",
+			"Enabled": true
+		},
+		{
+			"Name": "AudioModulation",
+			"Enabled": true
+		},
+		{
+			"Name": "Druids",
+			"Enabled": false
+		},
+		{
+			"Name": "BlueprintCMD",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "JayAnimator",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "Chestory",
+			"Enabled": false,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/346b0134920140aa9cc6caf427aa0801"
+		},
+		{
+			"Name": "UltimateQuestSystem",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "GameLauncherCloud",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "https://www.fab.com/portal/listings/42839bf1-0faf-4839-9ea2-3c2a746cf52d/"
+		},
+		{
+			"Name": "VCSFramework",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/61e5a6c5f22a43cf84604c48ff803925",
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Progress_Bar_Simplifier",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "GameplayStateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "SmartObjects",
+			"Enabled": true
+		},
+		{
+			"Name": "GuidedTutorials",
+			"Enabled": true
+		},
+		{
+			"Name": "MetaHuman",
+			"Enabled": true,
+			"bOptional": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux"
+			]
+		},
+		{
+			"Name": "MetaHumanCalibrationProcessing",
+			"Enabled": true,
+			"bOptional": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux"
+			]
+		},
+		{
+			"Name": "MetaHumanCoreTech",
+			"Enabled": true,
+			"bOptional": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux"
+			]
+		},
+		{
+			"Name": "MetaHumanLiveLink",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "SunPosition",
+			"Enabled": true
+		},
+		{
+			"Name": "SkeletalMerging",
+			"Enabled": true
+		},
+		{
+			"Name": "CodeEditor",
+			"Enabled": true
+		},
+		{
+			"Name": "BlueprintMaterialTextureNodes",
+			"Enabled": true
+		},
+		{
+			"Name": "CQTest",
+			"Enabled": true
+		},
+		{
+			"Name": "ActorModifierCore",
+			"Enabled": true
+		},
+		{
+			"Name": "PCGBiomeCore",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGExternalDataInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGFastGeoInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGNiagaraInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGNaniteAssembliesInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGInstancedActorsInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGGeometryScriptInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGWaterInterop",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "PCGBiomeSample",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "ATBotEditor",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "wisefeline",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "Sonant",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/0d59694e-e827-48d0-b0fc-d9a25b3d6968"
+		},
+		{
+			"Name": "FileSDK",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/4f737815666c4e7dabf2043fb55a8419"
+		},
+		{
+			"Name": "LDAssistant",
+			"Enabled": false,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/51c5a9a0d5f84beba23aab69bed8d28c"
+		},
+		{
+			"Name": "SMSystem",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/916643d0c665469594233cb0487e6d3d"
+		},
+		{
+			"Name": "OneButtonLevelGeneration",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/a0a5678a-2747-4550-aa54-0fa8f2a78460"
+		},
+		{
+			"Name": "LXR",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/bfe03ff858fa4b8d9766d7e9113f3829"
+		},
+		{
+			"Name": "MatUtils",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/c2cb46a5-d226-4011-b3dd-ed3f8a87861e"
+		},
+		{
+			"Name": "BlueprintReader",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/562ab219-d38e-413c-89a1-a9c1b09a5b97"
+		},
+		{
+			"Name": "ModuleGeneration",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "QuickCodeEditor",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "SteamAPI",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/43f51bd9-f8f2-431b-8af2-73764a9baf84"
+		},
+		{
+			"Name": "PCGExtendedToolkit",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "Anchorpoint",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/a1f11a3c-1b51-4417-9e2a-4ec1e60f7e67"
+		},
+		{
+			"Name": "RyHelpfulHelpers",
+			"Enabled": true,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/25653d83f1f84775b09ed750659f9ca3"
+		},
+		{
+			"Name": "AnimatorKit",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "MetaHumanCharacter",
+			"Enabled": true,
+			"bOptional": true
+		},
+		{
+			"Name": "InworldRuntime",
+			"Enabled": false,
+			"bOptional": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/a5418bc3-d787-4f53-a6ff-a26eff4d0a30"
+		},
+		{
+			"Name": "Aura",
+			"Enabled": true,
+			"bOptional": true
+		}
+	]
 }
